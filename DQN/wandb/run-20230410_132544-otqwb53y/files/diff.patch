@@ -1,0 +1,3461 @@
+diff --git a/.idea/.gitignore b/.idea/.gitignore
+new file mode 100644
+index 0000000..26d3352
+--- /dev/null
++++ b/.idea/.gitignore
+@@ -0,0 +1,3 @@
++# Default ignored files
++/shelf/
++/workspace.xml
+diff --git a/.idea/atarirl.iml b/.idea/atarirl.iml
+new file mode 100644
+index 0000000..2c80e12
+--- /dev/null
++++ b/.idea/atarirl.iml
+@@ -0,0 +1,10 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<module type="PYTHON_MODULE" version="4">
++  <component name="NewModuleRootManager">
++    <content url="file://$MODULE_DIR$">
++      <excludeFolder url="file://$MODULE_DIR$/.venv" />
++    </content>
++    <orderEntry type="inheritedJdk" />
++    <orderEntry type="sourceFolder" forTests="false" />
++  </component>
++</module>
+\ No newline at end of file
+diff --git a/.idea/inspectionProfiles/profiles_settings.xml b/.idea/inspectionProfiles/profiles_settings.xml
+new file mode 100644
+index 0000000..105ce2d
+--- /dev/null
++++ b/.idea/inspectionProfiles/profiles_settings.xml
+@@ -0,0 +1,6 @@
++<component name="InspectionProjectProfileManager">
++  <settings>
++    <option name="USE_PROJECT_PROFILE" value="false" />
++    <version value="1.0" />
++  </settings>
++</component>
+\ No newline at end of file
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+new file mode 100644
+index 0000000..2b1ec5b
+--- /dev/null
++++ b/.idea/misc.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.9 (atarirl)" project-jdk-type="Python SDK" />
++</project>
+\ No newline at end of file
+diff --git a/.idea/modules.xml b/.idea/modules.xml
+new file mode 100644
+index 0000000..c59cd57
+--- /dev/null
++++ b/.idea/modules.xml
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="ProjectModuleManager">
++    <modules>
++      <module fileurl="file://$PROJECT_DIR$/.idea/atarirl.iml" filepath="$PROJECT_DIR$/.idea/atarirl.iml" />
++    </modules>
++  </component>
++</project>
+\ No newline at end of file
+diff --git a/.idea/vcs.xml b/.idea/vcs.xml
+new file mode 100644
+index 0000000..94a25f7
+--- /dev/null
++++ b/.idea/vcs.xml
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="VcsDirectoryMappings">
++    <mapping directory="$PROJECT_DIR$" vcs="Git" />
++  </component>
++</project>
+\ No newline at end of file
+diff --git a/AtariDQN.ipynb b/AtariDQN.ipynb
+deleted file mode 100644
+index 41315fb..0000000
+--- a/AtariDQN.ipynb
++++ /dev/null
+@@ -1,229 +0,0 @@
+-{
+- "cells": [
+-  {
+-   "cell_type": "code",
+-   "execution_count": 1,
+-   "metadata": {},
+-   "outputs": [
+-    {
+-     "name": "stdout",
+-     "output_type": "stream",
+-     "text": [
+-      "Requirement already satisfied: gym[atari] in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (0.21.0)\n",
+-      "Requirement already satisfied: numpy>=1.18.0 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from gym[atari]) (1.23.5)\n",
+-      "Requirement already satisfied: cloudpickle>=1.2.0 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from gym[atari]) (2.2.1)\n",
+-      "Requirement already satisfied: ale-py~=0.7.1 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from gym[atari]) (0.7.5)\n",
+-      "Requirement already satisfied: importlib-resources in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from ale-py~=0.7.1->gym[atari]) (5.12.0)\n",
+-      "Note: you may need to restart the kernel to use updated packages.\n",
+-      "Requirement already satisfied: autorom[accept-rom-license] in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (0.6.0)\n",
+-      "Requirement already satisfied: libtorrent in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from autorom[accept-rom-license]) (2.0.7)\n",
+-      "Requirement already satisfied: requests in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from autorom[accept-rom-license]) (2.28.2)\n",
+-      "Requirement already satisfied: click in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from autorom[accept-rom-license]) (8.1.3)\n",
+-      "Requirement already satisfied: AutoROM.accept-rom-license in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from autorom[accept-rom-license]) (0.6.0)\n",
+-      "Requirement already satisfied: colorama in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from click->autorom[accept-rom-license]) (0.4.6)\n",
+-      "Requirement already satisfied: certifi>=2017.4.17 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from requests->autorom[accept-rom-license]) (2022.12.7)\n",
+-      "Requirement already satisfied: charset-normalizer<4,>=2 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from requests->autorom[accept-rom-license]) (3.1.0)\n",
+-      "Requirement already satisfied: idna<4,>=2.5 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from requests->autorom[accept-rom-license]) (3.4)\n",
+-      "Requirement already satisfied: urllib3<1.27,>=1.21.1 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from requests->autorom[accept-rom-license]) (1.26.15)\n",
+-      "Note: you may need to restart the kernel to use updated packages.\n",
+-      "Collecting tensorflow==2.12.0\n",
+-      "  Using cached tensorflow-2.12.0-cp310-cp310-win_amd64.whl (1.9 kB)\n",
+-      "Requirement already satisfied: keras==2.12.0 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (2.12.0)\n",
+-      "Collecting keras-rl2\n",
+-      "  Using cached keras_rl2-1.0.5-py3-none-any.whl (52 kB)\n",
+-      "Collecting tensorflow-intel==2.12.0\n",
+-      "  Using cached tensorflow_intel-2.12.0-cp310-cp310-win_amd64.whl (272.8 MB)\n",
+-      "Requirement already satisfied: grpcio<2.0,>=1.24.3 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from tensorflow-intel==2.12.0->tensorflow==2.12.0) (1.51.3)\n",
+-      "Requirement already satisfied: tensorboard<2.13,>=2.12 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from tensorflow-intel==2.12.0->tensorflow==2.12.0) (2.12.1)\n",
+-      "Requirement already satisfied: libclang>=13.0.0 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from tensorflow-intel==2.12.0->tensorflow==2.12.0) (16.0.0)\n",
+-      "Requirement already satisfied: termcolor>=1.1.0 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from tensorflow-intel==2.12.0->tensorflow==2.12.0) (2.2.0)\n",
+-      "Requirement already satisfied: astunparse>=1.6.0 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from tensorflow-intel==2.12.0->tensorflow==2.12.0) (1.6.3)\n",
+-      "Requirement already satisfied: numpy<1.24,>=1.22 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from tensorflow-intel==2.12.0->tensorflow==2.12.0) (1.23.5)\n",
+-      "Requirement already satisfied: flatbuffers>=2.0 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from tensorflow-intel==2.12.0->tensorflow==2.12.0) (23.3.3)\n",
+-      "Requirement already satisfied: jax>=0.3.15 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from tensorflow-intel==2.12.0->tensorflow==2.12.0) (0.4.8)\n",
+-      "Requirement already satisfied: absl-py>=1.0.0 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from tensorflow-intel==2.12.0->tensorflow==2.12.0) (1.4.0)\n",
+-      "Requirement already satisfied: tensorflow-io-gcs-filesystem>=0.23.1 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from tensorflow-intel==2.12.0->tensorflow==2.12.0) (0.31.0)\n",
+-      "Requirement already satisfied: wrapt<1.15,>=1.11.0 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from tensorflow-intel==2.12.0->tensorflow==2.12.0) (1.14.1)\n",
+-      "Requirement already satisfied: tensorflow-estimator<2.13,>=2.12.0 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from tensorflow-intel==2.12.0->tensorflow==2.12.0) (2.12.0)\n",
+-      "Requirement already satisfied: gast<=0.4.0,>=0.2.1 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from tensorflow-intel==2.12.0->tensorflow==2.12.0) (0.4.0)\n",
+-      "Requirement already satisfied: six>=1.12.0 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from tensorflow-intel==2.12.0->tensorflow==2.12.0) (1.16.0)\n",
+-      "Requirement already satisfied: typing-extensions>=3.6.6 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from tensorflow-intel==2.12.0->tensorflow==2.12.0) (4.5.0)\n",
+-      "Requirement already satisfied: protobuf!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5,<5.0.0dev,>=3.20.3 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from tensorflow-intel==2.12.0->tensorflow==2.12.0) (4.22.1)\n",
+-      "Requirement already satisfied: google-pasta>=0.1.1 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from tensorflow-intel==2.12.0->tensorflow==2.12.0) (0.2.0)\n",
+-      "Requirement already satisfied: packaging in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from tensorflow-intel==2.12.0->tensorflow==2.12.0) (23.0)\n",
+-      "Requirement already satisfied: opt-einsum>=2.3.2 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from tensorflow-intel==2.12.0->tensorflow==2.12.0) (3.3.0)\n",
+-      "Requirement already satisfied: setuptools in c:\\program files\\windowsapps\\pythonsoftwarefoundation.python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\\lib\\site-packages (from tensorflow-intel==2.12.0->tensorflow==2.12.0) (65.5.0)\n",
+-      "Requirement already satisfied: h5py>=2.9.0 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from tensorflow-intel==2.12.0->tensorflow==2.12.0) (3.8.0)\n",
+-      "Requirement already satisfied: wheel<1.0,>=0.23.0 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from astunparse>=1.6.0->tensorflow-intel==2.12.0->tensorflow==2.12.0) (0.40.0)\n",
+-      "Requirement already satisfied: ml-dtypes>=0.0.3 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from jax>=0.3.15->tensorflow-intel==2.12.0->tensorflow==2.12.0) (0.0.4)\n",
+-      "Requirement already satisfied: scipy>=1.7 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from jax>=0.3.15->tensorflow-intel==2.12.0->tensorflow==2.12.0) (1.10.1)\n",
+-      "Requirement already satisfied: werkzeug>=1.0.1 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from tensorboard<2.13,>=2.12->tensorflow-intel==2.12.0->tensorflow==2.12.0) (2.2.3)\n",
+-      "Requirement already satisfied: tensorboard-plugin-wit>=1.6.0 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from tensorboard<2.13,>=2.12->tensorflow-intel==2.12.0->tensorflow==2.12.0) (1.8.1)\n",
+-      "Requirement already satisfied: tensorboard-data-server<0.8.0,>=0.7.0 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from tensorboard<2.13,>=2.12->tensorflow-intel==2.12.0->tensorflow==2.12.0) (0.7.0)\n",
+-      "Requirement already satisfied: google-auth-oauthlib<1.1,>=0.5 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from tensorboard<2.13,>=2.12->tensorflow-intel==2.12.0->tensorflow==2.12.0) (1.0.0)\n",
+-      "Requirement already satisfied: markdown>=2.6.8 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from tensorboard<2.13,>=2.12->tensorflow-intel==2.12.0->tensorflow==2.12.0) (3.4.3)\n",
+-      "Requirement already satisfied: requests<3,>=2.21.0 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from tensorboard<2.13,>=2.12->tensorflow-intel==2.12.0->tensorflow==2.12.0) (2.28.2)\n",
+-      "Requirement already satisfied: google-auth<3,>=1.6.3 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from tensorboard<2.13,>=2.12->tensorflow-intel==2.12.0->tensorflow==2.12.0) (2.16.3)\n",
+-      "Requirement already satisfied: cachetools<6.0,>=2.0.0 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from google-auth<3,>=1.6.3->tensorboard<2.13,>=2.12->tensorflow-intel==2.12.0->tensorflow==2.12.0) (5.3.0)\n",
+-      "Requirement already satisfied: rsa<5,>=3.1.4 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from google-auth<3,>=1.6.3->tensorboard<2.13,>=2.12->tensorflow-intel==2.12.0->tensorflow==2.12.0) (4.9)\n",
+-      "Requirement already satisfied: pyasn1-modules>=0.2.1 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from google-auth<3,>=1.6.3->tensorboard<2.13,>=2.12->tensorflow-intel==2.12.0->tensorflow==2.12.0) (0.2.8)\n",
+-      "Requirement already satisfied: requests-oauthlib>=0.7.0 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from google-auth-oauthlib<1.1,>=0.5->tensorboard<2.13,>=2.12->tensorflow-intel==2.12.0->tensorflow==2.12.0) (1.3.1)\n",
+-      "Requirement already satisfied: idna<4,>=2.5 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from requests<3,>=2.21.0->tensorboard<2.13,>=2.12->tensorflow-intel==2.12.0->tensorflow==2.12.0) (3.4)\n",
+-      "Requirement already satisfied: certifi>=2017.4.17 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from requests<3,>=2.21.0->tensorboard<2.13,>=2.12->tensorflow-intel==2.12.0->tensorflow==2.12.0) (2022.12.7)\n",
+-      "Requirement already satisfied: charset-normalizer<4,>=2 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from requests<3,>=2.21.0->tensorboard<2.13,>=2.12->tensorflow-intel==2.12.0->tensorflow==2.12.0) (3.1.0)\n",
+-      "Requirement already satisfied: urllib3<1.27,>=1.21.1 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from requests<3,>=2.21.0->tensorboard<2.13,>=2.12->tensorflow-intel==2.12.0->tensorflow==2.12.0) (1.26.15)\n",
+-      "Requirement already satisfied: MarkupSafe>=2.1.1 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from werkzeug>=1.0.1->tensorboard<2.13,>=2.12->tensorflow-intel==2.12.0->tensorflow==2.12.0) (2.1.2)\n",
+-      "Requirement already satisfied: pyasn1<0.5.0,>=0.4.6 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from pyasn1-modules>=0.2.1->google-auth<3,>=1.6.3->tensorboard<2.13,>=2.12->tensorflow-intel==2.12.0->tensorflow==2.12.0) (0.4.8)\n",
+-      "Requirement already satisfied: oauthlib>=3.0.0 in c:\\users\\stick\\appdata\\local\\packages\\pythonsoftwarefoundation.python.3.10_qbz5n2kfra8p0\\localcache\\local-packages\\python310\\site-packages (from requests-oauthlib>=0.7.0->google-auth-oauthlib<1.1,>=0.5->tensorboard<2.13,>=2.12->tensorflow-intel==2.12.0->tensorflow==2.12.0) (3.2.2)\n",
+-      "Installing collected packages: tensorflow-intel, tensorflow, keras-rl2\n",
+-      "Note: you may need to restart the kernel to use updated packages.\n"
+-     ]
+-    },
+-    {
+-     "name": "stderr",
+-     "output_type": "stream",
+-     "text": [
+-      "WARNING: Retrying (Retry(total=4, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))': /simple/tensorflow/\n",
+-      "WARNING: Retrying (Retry(total=3, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))': /simple/tensorflow/\n",
+-      "WARNING: Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ProtocolError('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))': /simple/tensorflow/\n",
+-      "ERROR: Could not install packages due to an OSError: [Errno 2] No such file or directory: 'C:\\\\Users\\\\stick\\\\AppData\\\\Local\\\\Packages\\\\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\\\\LocalCache\\\\local-packages\\\\Python310\\\\site-packages\\\\tensorflow\\\\include\\\\external\\\\com_github_grpc_grpc\\\\src\\\\core\\\\ext\\\\filters\\\\client_channel\\\\lb_policy\\\\grpclb\\\\client_load_reporting_filter.h'\n",
+-      "HINT: This error might have occurred since this system does not have Windows Long Path support enabled. You can find information on how to enable this at https://pip.pypa.io/warnings/enable-long-paths\n",
+-      "\n"
+-     ]
+-    }
+-   ],
+-   "source": [
+-    "%pip install gym[atari]\n",
+-    "%pip install autorom[accept-rom-license]\n",
+-    "%pip install tensorflow==2.12.0 keras==2.12.0 keras-rl2"
+-   ]
+-  },
+-  {
+-   "cell_type": "code",
+-   "execution_count": 2,
+-   "metadata": {},
+-   "outputs": [],
+-   "source": [
+-    "import gym\n",
+-    "import random"
+-   ]
+-  },
+-  {
+-   "cell_type": "code",
+-   "execution_count": 3,
+-   "metadata": {},
+-   "outputs": [],
+-   "source": [
+-    "env = gym.make(\"ALE/Assault-v5\")\n",
+-    "height, width, channels = env.observation_space.shape # Sets up parameters for DQN model later\n",
+-    "actions = env.action_space.n # Total number of actions we can take"
+-   ]
+-  },
+-  {
+-   "cell_type": "code",
+-   "execution_count": 4,
+-   "metadata": {},
+-   "outputs": [
+-    {
+-     "data": {
+-      "text/plain": [
+-       "['NOOP', 'FIRE', 'UP', 'RIGHT', 'LEFT', 'RIGHTFIRE', 'LEFTFIRE']"
+-      ]
+-     },
+-     "execution_count": 4,
+-     "metadata": {},
+-     "output_type": "execute_result"
+-    }
+-   ],
+-   "source": [
+-    "env.unwrapped.get_action_meanings() # Gets the names of the actions our agent can take in this environment"
+-   ]
+-  },
+-  {
+-   "cell_type": "code",
+-   "execution_count": 5,
+-   "metadata": {},
+-   "outputs": [
+-    {
+-     "name": "stdout",
+-     "output_type": "stream",
+-     "text": [
+-      "Episode:0 Score:357.0\n",
+-      "Episode:1 Score:378.0\n",
+-      "Episode:2 Score:231.0\n",
+-      "Episode:3 Score:168.0\n",
+-      "Episode:4 Score:252.0\n"
+-     ]
+-    }
+-   ],
+-   "source": [
+-    "episodes = 5\n",
+-    "for episode in range(episodes):\n",
+-    "    state = env.reset()\n",
+-    "    done = False\n",
+-    "    score = 0 \n",
+-    "    \n",
+-    "    while not done:\n",
+-    "        action = env.action_space.sample() # Gets a random action that the agent can take\n",
+-    "        n_state, reward, done, info = env.step(action)\n",
+-    "        score+=reward\n",
+-    "    print('Episode:{} Score:{}'.format(episode, score))\n",
+-    "env.close()"
+-   ]
+-  },
+-  {
+-   "cell_type": "code",
+-   "execution_count": 6,
+-   "metadata": {},
+-   "outputs": [
+-    {
+-     "ename": "ModuleNotFoundError",
+-     "evalue": "No module named 'tensorflow.python'",
+-     "output_type": "error",
+-     "traceback": [
+-      "\u001b[1;31m---------------------------------------------------------------------------\u001b[0m",
+-      "\u001b[1;31mModuleNotFoundError\u001b[0m                       Traceback (most recent call last)",
+-      "Cell \u001b[1;32mIn[6], line 2\u001b[0m\n\u001b[0;32m      1\u001b[0m \u001b[39mimport\u001b[39;00m \u001b[39mnumpy\u001b[39;00m \u001b[39mas\u001b[39;00m \u001b[39mnp\u001b[39;00m\n\u001b[1;32m----> 2\u001b[0m \u001b[39mfrom\u001b[39;00m \u001b[39mtensorflow\u001b[39;00m\u001b[39m.\u001b[39;00m\u001b[39mkeras\u001b[39;00m\u001b[39m.\u001b[39;00m\u001b[39mmodels\u001b[39;00m \u001b[39mimport\u001b[39;00m Sequential\n\u001b[0;32m      3\u001b[0m \u001b[39mfrom\u001b[39;00m \u001b[39mtensorflow\u001b[39;00m\u001b[39m.\u001b[39;00m\u001b[39mkeras\u001b[39;00m\u001b[39m.\u001b[39;00m\u001b[39mlayers\u001b[39;00m \u001b[39mimport\u001b[39;00m Dense, Flatten, Convolution2D\n\u001b[0;32m      4\u001b[0m \u001b[39mfrom\u001b[39;00m \u001b[39mtensorflow\u001b[39;00m\u001b[39m.\u001b[39;00m\u001b[39mkeras\u001b[39;00m\u001b[39m.\u001b[39;00m\u001b[39moptimizers\u001b[39;00m \u001b[39mimport\u001b[39;00m Adam\n",
+-      "File \u001b[1;32m~\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python310\\site-packages\\tensorflow\\__init__.py:37\u001b[0m\n\u001b[0;32m     34\u001b[0m \u001b[39mimport\u001b[39;00m \u001b[39msys\u001b[39;00m \u001b[39mas\u001b[39;00m \u001b[39m_sys\u001b[39;00m\n\u001b[0;32m     35\u001b[0m \u001b[39mimport\u001b[39;00m \u001b[39mtyping\u001b[39;00m \u001b[39mas\u001b[39;00m \u001b[39m_typing\u001b[39;00m\n\u001b[1;32m---> 37\u001b[0m \u001b[39mfrom\u001b[39;00m \u001b[39mtensorflow\u001b[39;00m\u001b[39m.\u001b[39;00m\u001b[39mpython\u001b[39;00m\u001b[39m.\u001b[39;00m\u001b[39mtools\u001b[39;00m \u001b[39mimport\u001b[39;00m module_util \u001b[39mas\u001b[39;00m _module_util\n\u001b[0;32m     38\u001b[0m \u001b[39mfrom\u001b[39;00m \u001b[39mtensorflow\u001b[39;00m\u001b[39m.\u001b[39;00m\u001b[39mpython\u001b[39;00m\u001b[39m.\u001b[39;00m\u001b[39mutil\u001b[39;00m\u001b[39m.\u001b[39;00m\u001b[39mlazy_loader\u001b[39;00m \u001b[39mimport\u001b[39;00m LazyLoader \u001b[39mas\u001b[39;00m _LazyLoader\n\u001b[0;32m     40\u001b[0m \u001b[39m# Make sure code inside the TensorFlow codebase can use tf2.enabled() at import.\u001b[39;00m\n",
+-      "\u001b[1;31mModuleNotFoundError\u001b[0m: No module named 'tensorflow.python'"
+-     ]
+-    }
+-   ],
+-   "source": [
+-    "import numpy as np\n",
+-    "from tensorflow.keras.models import Sequential\n",
+-    "from tensorflow.keras.layers import Dense, Flatten, Convolution2D\n",
+-    "from tensorflow.keras.optimizers import Adam"
+-   ]
+-  },
+-  {
+-   "cell_type": "code",
+-   "execution_count": null,
+-   "metadata": {},
+-   "outputs": [],
+-   "source": []
+-  }
+- ],
+- "metadata": {
+-  "kernelspec": {
+-   "display_name": "base",
+-   "language": "python",
+-   "name": "python3"
+-  },
+-  "language_info": {
+-   "codemirror_mode": {
+-    "name": "ipython",
+-    "version": 3
+-   },
+-   "file_extension": ".py",
+-   "mimetype": "text/x-python",
+-   "name": "python",
+-   "nbconvert_exporter": "python",
+-   "pygments_lexer": "ipython3",
+-   "version": "3.10.11"
+-  },
+-  "orig_nbformat": 4
+- },
+- "nbformat": 4,
+- "nbformat_minor": 2
+-}
+diff --git a/DQN/cleanrl_utils/__init__.py b/DQN/cleanrl_utils/__init__.py
+new file mode 100644
+index 0000000..e69de29
+diff --git a/DQN/cleanrl_utils/add_header.py b/DQN/cleanrl_utils/add_header.py
+new file mode 100644
+index 0000000..f81a73c
+--- /dev/null
++++ b/DQN/cleanrl_utils/add_header.py
+@@ -0,0 +1,28 @@
++import os
++
++
++def add_header(dirname: str):
++    """
++    Add a header string with documentation link
++    to each file in the directory `dirname`.
++    """
++
++    for filename in os.listdir(dirname):
++        if filename.endswith(".py"):
++            with open(os.path.join(dirname, filename)) as f:
++                lines = f.readlines()
++
++            # hacky bit
++            exp_name = filename.split(".")[0]
++            algo_name = exp_name.split("_")[0]
++            header_string = f"# docs and experiment results can be found at https://docs.cleanrl.dev/rl-algorithms/{algo_name}/#{exp_name}py"
++
++            if not lines[0].startswith(header_string):
++                print(f"adding headers for {filename}")
++                lines.insert(0, header_string + "\n")
++                with open(os.path.join(dirname, filename), "w") as f:
++                    f.writelines(lines)
++
++
++if __name__ == "__main__":
++    add_header("cleanrl")
+diff --git a/DQN/cleanrl_utils/benchmark.py b/DQN/cleanrl_utils/benchmark.py
+new file mode 100644
+index 0000000..5274810
+--- /dev/null
++++ b/DQN/cleanrl_utils/benchmark.py
+@@ -0,0 +1,93 @@
++import argparse
++import os
++import shlex
++import subprocess
++from distutils.util import strtobool
++
++import requests
++
++
++def parse_args():
++    # fmt: off
++    parser = argparse.ArgumentParser()
++    parser.add_argument("--env-ids", nargs="+", default=["CartPole-v1", "Acrobot-v1", "MountainCar-v0"],
++        help="the ids of the environment to benchmark")
++    parser.add_argument("--command", type=str, default="poetry run python cleanrl/ppo.py",
++        help="the command to run")
++    parser.add_argument("--num-seeds", type=int, default=3,
++        help="the number of random seeds")
++    parser.add_argument("--start-seed", type=int, default=1,
++        help="the number of the starting seed")
++    parser.add_argument("--workers", type=int, default=0,
++        help="the number of workers to run benchmark experimenets")
++    parser.add_argument("--auto-tag", type=lambda x: bool(strtobool(x)), default=True, nargs="?", const=True,
++        help="if toggled, the runs will be tagged with git tags, commit, and pull request number if possible")
++    args = parser.parse_args()
++    # fmt: on
++    return args
++
++
++def run_experiment(command: str):
++    command_list = shlex.split(command)
++    print(f"running {command}")
++    fd = subprocess.Popen(command_list)
++    return_code = fd.wait()
++    assert return_code == 0
++
++
++def autotag() -> str:
++    wandb_tag = ""
++    print("autotag feature is enabled")
++    try:
++        git_tag = subprocess.check_output(["git", "describe", "--tags"]).decode("ascii").strip()
++        wandb_tag = f"{git_tag}"
++        print(f"identified git tag: {git_tag}")
++    except subprocess.CalledProcessError:
++        return wandb_tag
++
++    git_commit = subprocess.check_output(["git", "rev-parse", "--verify", "HEAD"]).decode("ascii").strip()
++    try:
++        # try finding the pull request number on github
++        prs = requests.get(f"https://api.github.com/search/issues?q=repo:vwxyzjn/cleanrl+is:pr+{git_commit}")
++        if prs.status_code == 200:
++            prs = prs.json()
++            if len(prs["items"]) > 0:
++                pr = prs["items"][0]
++                pr_number = pr["number"]
++                wandb_tag += f",pr-{pr_number}"
++        print(f"identified github pull request: {pr_number}")
++    except Exception as e:
++        print(e)
++
++    return wandb_tag
++
++
++if __name__ == "__main__":
++    args = parse_args()
++    if args.auto_tag:
++        if "WANDB_TAGS" in os.environ:
++            raise ValueError(
++                "WANDB_TAGS is already set. Please unset it before running this script or run the script with --auto-tag False"
++            )
++        wandb_tag = autotag()
++        if len(wandb_tag) > 0:
++            os.environ["WANDB_TAGS"] = wandb_tag
++
++    commands = []
++    for seed in range(0, args.num_seeds):
++        for env_id in args.env_ids:
++            commands += [" ".join([args.command, "--env-id", env_id, "--seed", str(args.start_seed + seed)])]
++
++    print("======= commands to run:")
++    for command in commands:
++        print(command)
++
++    if args.workers > 0:
++        from concurrent.futures import ThreadPoolExecutor
++
++        executor = ThreadPoolExecutor(max_workers=args.workers, thread_name_prefix="cleanrl-benchmark-worker-")
++        for command in commands:
++            executor.submit(run_experiment, command)
++        executor.shutdown(wait=True)
++    else:
++        print("not running the experiments because --workers is set to 0; just printing the commands to run")
+diff --git a/DQN/cleanrl_utils/buffers.py b/DQN/cleanrl_utils/buffers.py
+new file mode 100644
+index 0000000..ee14418
+--- /dev/null
++++ b/DQN/cleanrl_utils/buffers.py
+@@ -0,0 +1,700 @@
++import numpy as np
++
++
++def unique(sorted_array):
++    """
++    More efficient implementation of np.unique for sorted arrays
++    :param sorted_array: (np.ndarray)
++    :return:(np.ndarray) sorted_array without duplicate elements
++    """
++    if len(sorted_array) == 1:
++        return sorted_array
++    left = sorted_array[:-1]
++    right = sorted_array[1:]
++    uniques = np.append(right != left, True)
++    return sorted_array[uniques]
++
++
++class SegmentTree:
++    def __init__(self, capacity, operation, neutral_element):
++        """
++        Build a Segment Tree data structure.
++
++        https://en.wikipedia.org/wiki/Segment_tree
++
++        Can be used as regular array that supports Index arrays, but with two
++        important differences:
++
++            a) setting item's value is slightly slower.
++               It is O(lg capacity) instead of O(1).
++            b) user has access to an efficient ( O(log segment size) )
++               `reduce` operation which reduces `operation` over
++               a contiguous subsequence of items in the array.
++
++        :param capacity: (int) Total size of the array - must be a power of two.
++        :param operation: (lambda (Any, Any): Any) operation for combining elements (eg. sum, max) must form a
++            mathematical group together with the set of possible values for array elements (i.e. be associative)
++        :param neutral_element: (Any) neutral element for the operation above. eg. float('-inf') for max and 0 for sum.
++        """
++        assert capacity > 0 and capacity & (capacity - 1) == 0, "capacity must be positive and a power of 2."
++        self._capacity = capacity
++        self._value = [neutral_element for _ in range(2 * capacity)]
++        self._operation = operation
++        self.neutral_element = neutral_element
++
++    def _reduce_helper(self, start, end, node, node_start, node_end):
++        if start == node_start and end == node_end:
++            return self._value[node]
++        mid = (node_start + node_end) // 2
++        if end <= mid:
++            return self._reduce_helper(start, end, 2 * node, node_start, mid)
++        else:
++            if mid + 1 <= start:
++                return self._reduce_helper(start, end, 2 * node + 1, mid + 1, node_end)
++            else:
++                return self._operation(
++                    self._reduce_helper(start, mid, 2 * node, node_start, mid),
++                    self._reduce_helper(mid + 1, end, 2 * node + 1, mid + 1, node_end),
++                )
++
++    def reduce(self, start=0, end=None):
++        """
++        Returns result of applying `self.operation`
++        to a contiguous subsequence of the array.
++
++            self.operation(arr[start], operation(arr[start+1], operation(... arr[end])))
++
++        :param start: (int) beginning of the subsequence
++        :param end: (int) end of the subsequences
++        :return: (Any) result of reducing self.operation over the specified range of array elements.
++        """
++        if end is None:
++            end = self._capacity
++        if end < 0:
++            end += self._capacity
++        end -= 1
++        return self._reduce_helper(start, end, 1, 0, self._capacity - 1)
++
++    def __setitem__(self, idx, val):
++        # indexes of the leaf
++        idxs = idx + self._capacity
++        self._value[idxs] = val
++        if isinstance(idxs, int):
++            idxs = np.array([idxs])
++        # go up one level in the tree and remove duplicate indexes
++        idxs = unique(idxs // 2)
++        while len(idxs) > 1 or idxs[0] > 0:
++            # as long as there are non-zero indexes, update the corresponding values
++            self._value[idxs] = self._operation(self._value[2 * idxs], self._value[2 * idxs + 1])
++            # go up one level in the tree and remove duplicate indexes
++            idxs = unique(idxs // 2)
++
++    def __getitem__(self, idx):
++        assert np.max(idx) < self._capacity
++        assert 0 <= np.min(idx)
++        return self._value[self._capacity + idx]
++
++
++class SumSegmentTree(SegmentTree):
++    def __init__(self, capacity):
++        super().__init__(capacity=capacity, operation=np.add, neutral_element=0.0)
++        self._value = np.array(self._value)
++
++    def sum(self, start=0, end=None):
++        """
++        Returns arr[start] + ... + arr[end]
++
++        :param start: (int) start position of the reduction (must be >= 0)
++        :param end: (int) end position of the reduction (must be < len(arr), can be None for len(arr) - 1)
++        :return: (Any) reduction of SumSegmentTree
++        """
++        return super().reduce(start, end)
++
++    def find_prefixsum_idx(self, prefixsum):
++        """
++        Find the highest index `i` in the array such that
++            sum(arr[0] + arr[1] + ... + arr[i - i]) <= prefixsum for each entry in prefixsum
++
++        if array values are probabilities, this function
++        allows to sample indexes according to the discrete
++        probability efficiently.
++
++        :param prefixsum: (np.ndarray) float upper bounds on the sum of array prefix
++        :return: (np.ndarray) highest indexes satisfying the prefixsum constraint
++        """
++        if isinstance(prefixsum, float):
++            prefixsum = np.array([prefixsum])
++        assert 0 <= np.min(prefixsum)
++        assert np.max(prefixsum) <= self.sum() + 1e-5
++        assert isinstance(prefixsum[0], float)
++
++        idx = np.ones(len(prefixsum), dtype=int)
++        cont = np.ones(len(prefixsum), dtype=bool)
++
++        while np.any(cont):  # while not all nodes are leafs
++            idx[cont] = 2 * idx[cont]
++            prefixsum_new = np.where(self._value[idx] <= prefixsum, prefixsum - self._value[idx], prefixsum)
++            # prepare update of prefixsum for all right children
++            idx = np.where(np.logical_or(self._value[idx] > prefixsum, np.logical_not(cont)), idx, idx + 1)
++            # Select child node for non-leaf nodes
++            prefixsum = prefixsum_new
++            # update prefixsum
++            cont = idx < self._capacity
++            # collect leafs
++        return idx - self._capacity
++
++
++class MinSegmentTree(SegmentTree):
++    def __init__(self, capacity):
++        super().__init__(capacity=capacity, operation=np.minimum, neutral_element=float("inf"))
++        self._value = np.array(self._value)
++
++    def min(self, start=0, end=None):
++        """
++        Returns min(arr[start], ...,  arr[end])
++
++        :param start: (int) start position of the reduction (must be >= 0)
++        :param end: (int) end position of the reduction (must be < len(arr), can be None for len(arr) - 1)
++        :return: (Any) reduction of MinSegmentTree
++        """
++        return super().reduce(start, end)
++
++
++import warnings
++from abc import ABC, abstractmethod
++from typing import Dict, Generator, NamedTuple, Optional, Union
++
++import numpy as np
++import torch as th
++from gym import spaces
++
++try:
++    # Check memory used by replay buffer when possible
++    import psutil
++except ImportError:
++    psutil = None
++
++from stable_baselines3.common.preprocessing import get_action_dim, get_obs_shape
++from stable_baselines3.common.type_aliases import (
++    ReplayBufferSamples,
++    RolloutBufferSamples,
++)
++from stable_baselines3.common.vec_env import VecNormalize
++
++
++class PrioritizedReplayBufferSamples(NamedTuple):
++    observations: th.Tensor
++    actions: th.Tensor
++    next_observations: th.Tensor
++    dones: th.Tensor
++    rewards: th.Tensor
++    weights: np.ndarray
++    indices: np.ndarray
++
++
++class BaseBuffer(ABC):
++    """
++    Base class that represent a buffer (rollout or replay)
++
++    :param buffer_size: Max number of element in the buffer
++    :param observation_space: Observation space
++    :param action_space: Action space
++    :param device: PyTorch device
++        to which the values will be converted
++    :param n_envs: Number of parallel environments
++    """
++
++    def __init__(
++        self,
++        buffer_size: int,
++        observation_space: spaces.Space,
++        action_space: spaces.Space,
++        device: Union[th.device, str] = "cpu",
++        n_envs: int = 1,
++    ):
++        super().__init__()
++        self.buffer_size = buffer_size
++        self.observation_space = observation_space
++        self.action_space = action_space
++        self.obs_shape = get_obs_shape(observation_space)
++        self.action_dim = get_action_dim(action_space)
++        self.pos = 0
++        self.full = False
++        self.device = device
++        self.n_envs = n_envs
++
++    @staticmethod
++    def swap_and_flatten(arr: np.ndarray) -> np.ndarray:
++        """
++        Swap and then flatten axes 0 (buffer_size) and 1 (n_envs)
++        to convert shape from [n_steps, n_envs, ...] (when ... is the shape of the features)
++        to [n_steps * n_envs, ...] (which maintain the order)
++
++        :param arr:
++        :return:
++        """
++        shape = arr.shape
++        if len(shape) < 3:
++            shape = shape + (1,)
++        return arr.swapaxes(0, 1).reshape(shape[0] * shape[1], *shape[2:])
++
++    def size(self) -> int:
++        """
++        :return: The current size of the buffer
++        """
++        if self.full:
++            return self.buffer_size
++        return self.pos
++
++    def add(self, *args, **kwargs) -> None:
++        """
++        Add elements to the buffer.
++        """
++        raise NotImplementedError()
++
++    def extend(self, *args, **kwargs) -> None:
++        """
++        Add a new batch of transitions to the buffer
++        """
++        # Do a for loop along the batch axis
++        for data in zip(*args):
++            self.add(*data)
++
++    def reset(self) -> None:
++        """
++        Reset the buffer.
++        """
++        self.pos = 0
++        self.full = False
++
++    def sample(self, batch_size: int, env: Optional[VecNormalize] = None):
++        """
++        :param batch_size: Number of element to sample
++        :param env: associated gym VecEnv
++            to normalize the observations/rewards when sampling
++        :return:
++        """
++        upper_bound = self.buffer_size if self.full else self.pos
++        batch_inds = np.random.randint(0, upper_bound, size=batch_size)
++        return self._get_samples(batch_inds, env=env)
++
++    @abstractmethod
++    def _get_samples(
++        self, batch_inds: np.ndarray, env: Optional[VecNormalize] = None
++    ) -> Union[ReplayBufferSamples, RolloutBufferSamples]:
++        """
++        :param batch_inds:
++        :param env:
++        :return:
++        """
++        raise NotImplementedError()
++
++    def to_torch(self, array: np.ndarray, copy: bool = True) -> th.Tensor:
++        """
++        Convert a numpy array to a PyTorch tensor.
++        Note: it copies the data by default
++
++        :param array:
++        :param copy: Whether to copy or not the data
++            (may be useful to avoid changing things be reference)
++        :return:
++        """
++        if copy:
++            return th.tensor(array).to(self.device)
++        return th.as_tensor(array).to(self.device)
++
++    @staticmethod
++    def _normalize_obs(
++        obs: Union[np.ndarray, Dict[str, np.ndarray]], env: Optional[VecNormalize] = None
++    ) -> Union[np.ndarray, Dict[str, np.ndarray]]:
++        if env is not None:
++            return env.normalize_obs(obs)
++        return obs
++
++    @staticmethod
++    def _normalize_reward(reward: np.ndarray, env: Optional[VecNormalize] = None) -> np.ndarray:
++        if env is not None:
++            return env.normalize_reward(reward).astype(np.float32)
++        return reward
++
++
++class ReplayBuffer(BaseBuffer):
++    """
++    Replay buffer used in off-policy algorithms like SAC/TD3.
++
++    :param buffer_size: Max number of element in the buffer
++    :param observation_space: Observation space
++    :param action_space: Action space
++    :param device:
++    :param n_envs: Number of parallel environments
++    :param optimize_memory_usage: Enable a memory efficient variant
++        of the replay buffer which reduces by almost a factor two the memory used,
++        at a cost of more complexity.
++        See https://github.com/DLR-RM/stable-baselines3/issues/37#issuecomment-637501195
++        and https://github.com/DLR-RM/stable-baselines3/pull/28#issuecomment-637559274
++    """
++
++    def __init__(
++        self,
++        buffer_size: int,
++        observation_space: spaces.Space,
++        action_space: spaces.Space,
++        device: Union[th.device, str] = "cpu",
++        n_envs: int = 1,
++        optimize_memory_usage: bool = False,
++    ):
++        super().__init__(buffer_size, observation_space, action_space, device, n_envs=n_envs)
++
++        assert n_envs == 1, "Replay buffer only support single environment for now"
++
++        # Check that the replay buffer can fit into the memory
++        if psutil is not None:
++            mem_available = psutil.virtual_memory().available
++
++        self.optimize_memory_usage = optimize_memory_usage
++        self.observations = np.zeros((self.buffer_size, self.n_envs) + self.obs_shape, dtype=observation_space.dtype)
++        if optimize_memory_usage:
++            # `observations` contains also the next observation
++            self.next_observations = None
++        else:
++            self.next_observations = np.zeros((self.buffer_size, self.n_envs) + self.obs_shape, dtype=observation_space.dtype)
++        self.actions = np.zeros((self.buffer_size, self.n_envs, self.action_dim), dtype=action_space.dtype)
++        self.rewards = np.zeros((self.buffer_size, self.n_envs), dtype=np.float32)
++        self.dones = np.zeros((self.buffer_size, self.n_envs), dtype=np.float32)
++
++        if psutil is not None:
++            total_memory_usage = self.observations.nbytes + self.actions.nbytes + self.rewards.nbytes + self.dones.nbytes
++            if self.next_observations is not None:
++                total_memory_usage += self.next_observations.nbytes
++
++            if total_memory_usage > mem_available:
++                # Convert to GB
++                total_memory_usage /= 1e9
++                mem_available /= 1e9
++                warnings.warn(
++                    "This system does not have apparently enough memory to store the complete "
++                    f"replay buffer {total_memory_usage:.2f}GB > {mem_available:.2f}GB"
++                )
++
++    def add(self, obs: np.ndarray, next_obs: np.ndarray, action: np.ndarray, reward: np.ndarray, done: np.ndarray) -> None:
++        # Copy to avoid modification by reference
++        self.observations[self.pos] = np.array(obs).copy()
++        if self.optimize_memory_usage:
++            self.observations[(self.pos + 1) % self.buffer_size] = np.array(next_obs).copy()
++        else:
++            self.next_observations[self.pos] = np.array(next_obs).copy()
++
++        self.actions[self.pos] = np.array(action).copy()
++        self.rewards[self.pos] = np.array(reward).copy()
++        self.dones[self.pos] = np.array(done).copy()
++
++        self.pos += 1
++        if self.pos == self.buffer_size:
++            self.full = True
++            self.pos = 0
++
++    def sample(self, batch_size: int, env: Optional[VecNormalize] = None) -> ReplayBufferSamples:
++        """
++        Sample elements from the replay buffer.
++        Custom sampling when using memory efficient variant,
++        as we should not sample the element with index `self.pos`
++        See https://github.com/DLR-RM/stable-baselines3/pull/28#issuecomment-637559274
++
++        :param batch_size: Number of element to sample
++        :param env: associated gym VecEnv
++            to normalize the observations/rewards when sampling
++        :return:
++        """
++        if not self.optimize_memory_usage:
++            return super().sample(batch_size=batch_size, env=env)
++        # Do not sample the element with index `self.pos` as the transitions is invalid
++        # (we use only one array to store `obs` and `next_obs`)
++        if self.full:
++            batch_inds = (np.random.randint(1, self.buffer_size, size=batch_size) + self.pos) % self.buffer_size
++        else:
++            batch_inds = np.random.randint(0, self.pos, size=batch_size)
++        return self._get_samples(batch_inds, env=env)
++
++    def _get_samples(self, batch_inds: np.ndarray, env: Optional[VecNormalize] = None) -> ReplayBufferSamples:
++        if self.optimize_memory_usage:
++            next_obs = self._normalize_obs(self.observations[(batch_inds + 1) % self.buffer_size, 0, :], env)
++        else:
++            next_obs = self._normalize_obs(self.next_observations[batch_inds, 0, :], env)
++
++        data = (
++            self._normalize_obs(self.observations[batch_inds, 0, :], env),
++            self.actions[batch_inds, 0, :],
++            next_obs,
++            self.dones[batch_inds],
++            self._normalize_reward(self.rewards[batch_inds], env),
++        )
++        return ReplayBufferSamples(*tuple(map(self.to_torch, data)))
++
++
++class RolloutBuffer(BaseBuffer):
++    """
++    Rollout buffer used in on-policy algorithms like A2C/PPO.
++    It corresponds to ``buffer_size`` transitions collected
++    using the current policy.
++    This experience will be discarded after the policy update.
++    In order to use PPO objective, we also store the current value of each state
++    and the log probability of each taken action.
++
++    The term rollout here refers to the model-free notion and should not
++    be used with the concept of rollout used in model-based RL or planning.
++    Hence, it is only involved in policy and value function training but not action selection.
++
++    :param buffer_size: Max number of element in the buffer
++    :param observation_space: Observation space
++    :param action_space: Action space
++    :param device:
++    :param gae_lambda: Factor for trade-off of bias vs variance for Generalized Advantage Estimator
++        Equivalent to classic advantage when set to 1.
++    :param gamma: Discount factor
++    :param n_envs: Number of parallel environments
++    """
++
++    def __init__(
++        self,
++        buffer_size: int,
++        observation_space: spaces.Space,
++        action_space: spaces.Space,
++        device: Union[th.device, str] = "cpu",
++        gae_lambda: float = 1,
++        gamma: float = 0.99,
++        n_envs: int = 1,
++    ):
++
++        super().__init__(buffer_size, observation_space, action_space, device, n_envs=n_envs)
++        self.gae_lambda = gae_lambda
++        self.gamma = gamma
++        self.observations, self.actions, self.rewards, self.advantages = None, None, None, None
++        self.returns, self.dones, self.values, self.log_probs = None, None, None, None
++        self.generator_ready = False
++        self.reset()
++
++    def reset(self) -> None:
++        self.observations = np.zeros((self.buffer_size, self.n_envs) + self.obs_shape, dtype=np.float32)
++        self.actions = np.zeros((self.buffer_size, self.n_envs, self.action_dim), dtype=np.float32)
++        self.rewards = np.zeros((self.buffer_size, self.n_envs), dtype=np.float32)
++        self.returns = np.zeros((self.buffer_size, self.n_envs), dtype=np.float32)
++        self.dones = np.zeros((self.buffer_size, self.n_envs), dtype=np.float32)
++        self.values = np.zeros((self.buffer_size, self.n_envs), dtype=np.float32)
++        self.log_probs = np.zeros((self.buffer_size, self.n_envs), dtype=np.float32)
++        self.advantages = np.zeros((self.buffer_size, self.n_envs), dtype=np.float32)
++        self.generator_ready = False
++        super().reset()
++
++    def compute_returns_and_advantage(self, last_values: th.Tensor, dones: np.ndarray) -> None:
++        """
++        Post-processing step: compute the returns (sum of discounted rewards)
++        and GAE advantage.
++        Adapted from Stable-Baselines PPO2.
++
++        Uses Generalized Advantage Estimation (https://arxiv.org/abs/1506.02438)
++        to compute the advantage. To obtain vanilla advantage (A(s) = R - V(S))
++        where R is the discounted reward with value bootstrap,
++        set ``gae_lambda=1.0`` during initialization.
++
++        :param last_values:
++        :param dones:
++
++        """
++        # convert to numpy
++        last_values = last_values.clone().cpu().numpy().flatten()
++
++        last_gae_lam = 0
++        for step in reversed(range(self.buffer_size)):
++            if step == self.buffer_size - 1:
++                next_non_terminal = 1.0 - dones
++                next_values = last_values
++            else:
++                next_non_terminal = 1.0 - self.dones[step + 1]
++                next_values = self.values[step + 1]
++            delta = self.rewards[step] + self.gamma * next_values * next_non_terminal - self.values[step]
++            last_gae_lam = delta + self.gamma * self.gae_lambda * next_non_terminal * last_gae_lam
++            self.advantages[step] = last_gae_lam
++        self.returns = self.advantages + self.values
++
++    def add(
++        self, obs: np.ndarray, action: np.ndarray, reward: np.ndarray, done: np.ndarray, value: th.Tensor, log_prob: th.Tensor
++    ) -> None:
++        """
++        :param obs: Observation
++        :param action: Action
++        :param reward:
++        :param done: End of episode signal.
++        :param value: estimated value of the current state
++            following the current policy.
++        :param log_prob: log probability of the action
++            following the current policy.
++        """
++        if len(log_prob.shape) == 0:
++            # Reshape 0-d tensor to avoid error
++            log_prob = log_prob.reshape(-1, 1)
++
++        # Reshape needed when using multiple envs with discrete observations
++        # as numpy cannot broadcast (n_discrete,) to (n_discrete, 1)
++        if isinstance(self.observation_space, spaces.Discrete):
++            obs = obs.reshape((self.n_envs,) + self.obs_shape)
++
++        self.observations[self.pos] = np.array(obs).copy()
++        self.actions[self.pos] = np.array(action).copy()
++        self.rewards[self.pos] = np.array(reward).copy()
++        self.dones[self.pos] = np.array(done).copy()
++        self.values[self.pos] = value.clone().cpu().numpy().flatten()
++        self.log_probs[self.pos] = log_prob.clone().cpu().numpy()
++        self.pos += 1
++        if self.pos == self.buffer_size:
++            self.full = True
++
++    def get(self, batch_size: Optional[int] = None) -> Generator[RolloutBufferSamples, None, None]:
++        assert self.full, ""
++        indices = np.random.permutation(self.buffer_size * self.n_envs)
++        # Prepare the data
++        if not self.generator_ready:
++            for tensor in ["observations", "actions", "values", "log_probs", "advantages", "returns"]:
++                self.__dict__[tensor] = self.swap_and_flatten(self.__dict__[tensor])
++            self.generator_ready = True
++
++        # Return everything, don't create minibatches
++        if batch_size is None:
++            batch_size = self.buffer_size * self.n_envs
++
++        start_idx = 0
++        while start_idx < self.buffer_size * self.n_envs:
++            yield self._get_samples(indices[start_idx : start_idx + batch_size])
++            start_idx += batch_size
++
++    def _get_samples(self, batch_inds: np.ndarray, env: Optional[VecNormalize] = None) -> RolloutBufferSamples:
++        data = (
++            self.observations[batch_inds],
++            self.actions[batch_inds],
++            self.values[batch_inds].flatten(),
++            self.log_probs[batch_inds].flatten(),
++            self.advantages[batch_inds].flatten(),
++            self.returns[batch_inds].flatten(),
++        )
++        return RolloutBufferSamples(*tuple(map(self.to_torch, data)))
++
++
++class PrioritizedReplayBuffer(BaseBuffer):
++    """
++    Replay buffer used in off-policy algorithms like SAC/TD3.
++    This time with priorization!
++
++    TODO normalization stuff is probably not implemented correctly.
++
++    Mainly copy/paste from
++        https://github.com/hill-a/stable-baselines/blob/master/stable_baselines/common/buffers.py
++
++    :param buffer_size: Max number of element in the buffer
++    :param alpha: How much priorization is used (0: disabled, 1: full priorization)
++    :param observation_space: Observation space
++    :param action_space: Action space
++    :param device:
++    :param n_envs: Number of parallel environments
++    """
++
++    def __init__(
++        self,
++        buffer_size: int,
++        alpha: float,
++        observation_space: spaces.Space,
++        action_space: spaces.Space,
++        device: Union[th.device, str] = "cpu",
++        n_envs: int = 1,
++    ):
++        super().__init__(buffer_size, observation_space, action_space, device, n_envs=n_envs)
++
++        assert n_envs == 1, "Replay buffer only support single environment for now"
++        assert alpha >= 0
++
++        self.observations = np.zeros((self.buffer_size, self.n_envs) + self.obs_shape, dtype=observation_space.dtype)
++        self.next_observations = np.zeros((self.buffer_size, self.n_envs) + self.obs_shape, dtype=observation_space.dtype)
++        self.actions = np.zeros((self.buffer_size, self.n_envs, self.action_dim), dtype=action_space.dtype)
++        self.rewards = np.zeros((self.buffer_size, self.n_envs), dtype=np.float32)
++        self.dones = np.zeros((self.buffer_size, self.n_envs), dtype=np.float32)
++
++        it_capacity = 1
++        while it_capacity < buffer_size:
++            it_capacity *= 2
++        self._alpha = alpha
++        self._it_sum = SumSegmentTree(it_capacity)
++        self._it_min = MinSegmentTree(it_capacity)
++        self._max_weight = 1.0
++
++    def add(self, obs: np.ndarray, next_obs: np.ndarray, action: np.ndarray, reward: np.ndarray, done: np.ndarray) -> None:
++        # Copy to avoid modification by reference
++        self.observations[self.pos] = np.array(obs).copy()
++        self.next_observations[self.pos] = np.array(next_obs).copy()
++
++        self.actions[self.pos] = np.array(action).copy()
++        self.rewards[self.pos] = np.array(reward).copy()
++        self.dones[self.pos] = np.array(done).copy()
++
++        self._it_sum[self.pos] = self._max_weight**self._alpha
++        self._it_min[self.pos] = self._max_weight**self._alpha
++
++        self.pos += 1
++        if self.pos == self.buffer_size:
++            self.full = True
++            self.pos = 0
++
++    def _get_samples(self, batch_inds: np.ndarray, env: Optional[VecNormalize] = None) -> PrioritizedReplayBufferSamples:
++        next_obs = self._normalize_obs(self.next_observations[batch_inds, 0, :], env)
++
++        data = (
++            self._normalize_obs(self.observations[batch_inds, 0, :], env),
++            self.actions[batch_inds, 0, :],
++            next_obs,
++            self.dones[batch_inds],
++            self._normalize_reward(self.rewards[batch_inds], env),
++        )
++
++        return data
++
++    def sample(self, batch_size: int, beta: float, env: Optional[VecNormalize] = None) -> ReplayBufferSamples:
++        """
++        Sample elements from the replay buffer using priorization.
++
++        :param batch_size: Number of element to sample
++        :param beta: To what degree to use importance weights (0 - no corrections, 1 - full correction)
++        :param env: associated gym VecEnv
++            to normalize the observations/rewards when sampling
++        :return:
++        """
++        # Sample indices
++        mass = []
++        total = self._it_sum.sum(0, self.size() - 1)
++        # TODO(szymon): should we ensure no repeats?
++        mass = np.random.random(size=batch_size) * total
++        batch_inds = self._it_sum.find_prefixsum_idx(mass)
++        th_data = self._get_samples(batch_inds, env=env)
++
++        p_min = self._it_min.min() / self._it_sum.sum()
++        max_weight = (p_min * self.size()) ** (-beta)
++        p_sample = self._it_sum[batch_inds] / self._it_sum.sum()
++        weights = (p_sample * self.size()) ** (-beta) / max_weight
++
++        return PrioritizedReplayBufferSamples(*tuple(map(self.to_torch, th_data)), weights=weights, indices=batch_inds)
++
++    def update_weights(self, batch_inds: np.ndarray, weights: np.ndarray):
++        """
++        Update weights of sampled transitions.
++
++        sets weight of transition at index idxes[i] in buffer
++        to weights[i].
++
++        :param batch_inds: ([int]) np.ndarray of idxes of sampled transitions
++        :param weights: ([float]) np.ndarray of updated weights corresponding to transitions at the sampled idxes
++            denoted by variable `batch_inds`.
++        """
++        assert len(batch_inds) == len(weights)
++        assert np.min(weights) > 0
++        assert np.min(batch_inds) >= 0
++        assert np.max(batch_inds) < self.size()
++        self._it_sum[batch_inds] = weights**self._alpha
++        self._it_min[batch_inds] = weights**self._alpha
++
++        self._max_weight = max(self._max_weight, np.max(weights))
+diff --git a/DQN/cleanrl_utils/docker_build.py b/DQN/cleanrl_utils/docker_build.py
+new file mode 100644
+index 0000000..35e20f5
+--- /dev/null
++++ b/DQN/cleanrl_utils/docker_build.py
+@@ -0,0 +1,12 @@
++import argparse
++import subprocess
++
++parser = argparse.ArgumentParser()
++parser.add_argument("--tag", type=str, default="cleanrl:latest", help="the name of this experiment")
++args = parser.parse_args()
++
++subprocess.run(
++    f"docker build -t {args.tag} .",
++    shell=True,
++    check=True,
++)
+diff --git a/DQN/cleanrl_utils/docker_queue.py b/DQN/cleanrl_utils/docker_queue.py
+new file mode 100644
+index 0000000..3864fdb
+--- /dev/null
++++ b/DQN/cleanrl_utils/docker_queue.py
+@@ -0,0 +1,85 @@
++"""
++See https://github.com/docker/docker-py/issues/2395
++At the moment, nvidia-container-toolkit still includes nvidia-container-runtime. So, you can still add nvidia-container-runtime as a runtime in /etc/docker/daemon.json:
++
++{
++  "runtimes": {
++    "nvidia": {
++      "path": "nvidia-container-runtime",
++      "runtimeArgs": []
++    }
++  }
++}
++Then restart the docker service (sudo systemctl restart docker) and use runtime="nvidia" in docker-py as before.
++"""
++
++
++import argparse
++import shlex
++import time
++
++import docker
++
++parser = argparse.ArgumentParser(description="CleanRL Docker Submission")
++# Common arguments
++parser.add_argument("--exp-script", type=str, default="test1.sh", help="the file name of this experiment")
++# parser.add_argument('--cuda', type=lambda x:bool(strtobool(x)), default=True, nargs='?', const=True,
++#                     help='if toggled, cuda will not be enabled by default')
++parser.add_argument("--num-vcpus", type=int, default=16, help="total number of vcpus used in the host machine")
++parser.add_argument("--frequency", type=int, default=1, help="the number of seconds to check container update status")
++args = parser.parse_args()
++
++client = docker.from_env()
++
++# c = client.containers.run("ubuntu:latest", "echo hello world", detach=True)
++
++with open(args.exp_script) as f:
++    lines = f.readlines()
++
++tasks = []
++for line in lines:
++    line.replace("\n", "")
++    line_split = shlex.split(line)
++    for idx, item in enumerate(line_split):
++        if item == "-e":
++            break
++    env_vars = line_split[idx + 1 : idx + 2]
++    image = line_split[idx + 2]
++    commands = line_split[idx + 3 :]
++    tasks += [[image, env_vars, commands]]
++
++running_containers = []
++vcpus = list(range(args.num_vcpus))
++while len(tasks) != 0:
++    time.sleep(args.frequency)
++
++    # update running_containers
++    new_running_containers = []
++    for item in running_containers:
++        c = item[0]
++        c.reload()
++        if c.status != "exited":
++            new_running_containers += [item]
++        else:
++            print(f"✅ task on vcpu {item[1]} has finished")
++            vcpus += [item[1]]
++    running_containers = new_running_containers
++
++    if len(vcpus) != 0:
++        task = tasks.pop()
++        vcpu = vcpus.pop()
++        # if args.cuda:
++        #     c = client.containers.run(
++        #         image=task[0],
++        #         environment=task[1],
++        #         command=task[2],
++        #         runtime="nvidia",
++        #         cpuset_cpus=str(vcpu),
++        #         detach=True)
++        #     running_containers += [[c, vcpu]]
++        # else:
++        c = client.containers.run(image=task[0], environment=task[1], command=task[2], cpuset_cpus=str(vcpu), detach=True)
++        running_containers += [[c, vcpu]]
++        print("========================")
++        print(f"remaining tasks={len(tasks)}, running containers={len(running_containers)}")
++        print(f"running on vcpu {vcpu}", task)
+diff --git a/DQN/cleanrl_utils/enjoy.py b/DQN/cleanrl_utils/enjoy.py
+new file mode 100644
+index 0000000..a9ab51b
+--- /dev/null
++++ b/DQN/cleanrl_utils/enjoy.py
+@@ -0,0 +1,46 @@
++import argparse
++from distutils.util import strtobool
++
++from huggingface_hub import hf_hub_download
++
++from cleanrl_utils.evals import MODELS
++
++
++def parse_args():
++    # fmt: off
++    parser = argparse.ArgumentParser()
++    parser.add_argument("--exp-name", type=str, default="dqn_atari",
++        help="the name of this experiment (e.g., ppo, dqn_atari)")
++    parser.add_argument("--seed", type=int, default=1,
++        help="seed of the experiment")
++    parser.add_argument("--hf-entity", type=str, default="cleanrl",
++        help="the user or org name of the model repository from the Hugging Face Hub")
++    parser.add_argument("--hf-repository", type=str, default="",
++        help="the huggingface repo (e.g., cleanrl/BreakoutNoFrameskip-v4-dqn_atari-seed1)")
++    parser.add_argument("--env-id", type=str, default="BreakoutNoFrameskip-v4",
++        help="the id of the environment")
++    parser.add_argument("--eval-episodes", type=int, default=10,
++        help="the number of evaluation episodes")
++    parser.add_argument("--capture-video", type=lambda x: bool(strtobool(x)), default=False, nargs="?", const=True,
++        help="whether to capture videos of the agent performances (check out `videos` folder)")
++    args = parser.parse_args()
++    # fmt: on
++    return args
++
++
++if __name__ == "__main__":
++    args = parse_args()
++    Model, make_env, evaluate = MODELS[args.exp_name]()
++    if not args.hf_repository:
++        args.hf_repository = f"{args.hf_entity}/{args.env_id}-{args.exp_name}-seed{args.seed}"
++    print(f"loading saved models from {args.hf_repository}...")
++    model_path = hf_hub_download(repo_id=args.hf_repository, filename=f"{args.exp_name}.cleanrl_model")
++    evaluate(
++        model_path,
++        make_env,
++        args.env_id,
++        eval_episodes=args.eval_episodes,
++        run_name=f"eval",
++        Model=Model,
++        capture_video=args.capture_video,
++    )
+diff --git a/DQN/cleanrl_utils/evals/__init__.py b/DQN/cleanrl_utils/evals/__init__.py
+new file mode 100644
+index 0000000..9ffaf9a
+--- /dev/null
++++ b/DQN/cleanrl_utils/evals/__init__.py
+@@ -0,0 +1,82 @@
++def dqn():
++    import cleanrl.dqn
++    import cleanrl_utils.evals.dqn_eval
++
++    return cleanrl.dqn.QNetwork, cleanrl.dqn.make_env, cleanrl_utils.evals.dqn_eval.evaluate
++
++
++def dqn_atari():
++    import cleanrl.dqn_atari
++    import cleanrl_utils.evals.dqn_eval
++
++    return cleanrl.dqn_atari.QNetwork, cleanrl.dqn_atari.make_env, cleanrl_utils.evals.dqn_eval.evaluate
++
++
++def dqn_jax():
++    import cleanrl.dqn_jax
++    import cleanrl_utils.evals.dqn_jax_eval
++
++    return cleanrl.dqn_jax.QNetwork, cleanrl.dqn_jax.make_env, cleanrl_utils.evals.dqn_jax_eval.evaluate
++
++
++def dqn_atari_jax():
++    import cleanrl.dqn_atari_jax
++    import cleanrl_utils.evals.dqn_jax_eval
++
++    return cleanrl.dqn_atari_jax.QNetwork, cleanrl.dqn_atari_jax.make_env, cleanrl_utils.evals.dqn_jax_eval.evaluate
++
++
++def c51():
++    import cleanrl.c51
++    import cleanrl_utils.evals.c51_eval
++
++    return cleanrl.c51.QNetwork, cleanrl.c51.make_env, cleanrl_utils.evals.c51_eval.evaluate
++
++
++def c51_atari():
++    import cleanrl.c51_atari
++    import cleanrl_utils.evals.c51_eval
++
++    return cleanrl.c51_atari.QNetwork, cleanrl.c51_atari.make_env, cleanrl_utils.evals.c51_eval.evaluate
++
++
++def c51_jax():
++    import cleanrl.c51_jax
++    import cleanrl_utils.evals.c51_jax_eval
++
++    return cleanrl.c51_jax.QNetwork, cleanrl.c51_jax.make_env, cleanrl_utils.evals.c51_jax_eval.evaluate
++
++
++def c51_atari_jax():
++    import cleanrl.c51_atari_jax
++    import cleanrl_utils.evals.c51_jax_eval
++
++    return cleanrl.c51_atari_jax.QNetwork, cleanrl.c51_atari_jax.make_env, cleanrl_utils.evals.c51_jax_eval.evaluate
++
++
++def ppo_atari_envpool_xla_jax_scan():
++    import cleanrl.ppo_atari_envpool_xla_jax_scan
++    import cleanrl_utils.evals.ppo_envpool_jax_eval
++
++    return (
++        (
++            cleanrl.ppo_atari_envpool_xla_jax_scan.Network,
++            cleanrl.ppo_atari_envpool_xla_jax_scan.Actor,
++            cleanrl.ppo_atari_envpool_xla_jax_scan.Critic,
++        ),
++        cleanrl.ppo_atari_envpool_xla_jax_scan.make_env,
++        cleanrl_utils.evals.ppo_envpool_jax_eval.evaluate,
++    )
++
++
++MODELS = {
++    "dqn": dqn,
++    "dqn_atari": dqn_atari,
++    "dqn_jax": dqn_jax,
++    "dqn_atari_jax": dqn_atari_jax,
++    "c51": c51,
++    "c51_atari": c51_atari,
++    "c51_jax": c51_jax,
++    "c51_atari_jax": c51_atari_jax,
++    "ppo_atari_envpool_xla_jax_scan": ppo_atari_envpool_xla_jax_scan,
++}
+diff --git a/DQN/cleanrl_utils/evals/c51_eval.py b/DQN/cleanrl_utils/evals/c51_eval.py
+new file mode 100644
+index 0000000..4e65efa
+--- /dev/null
++++ b/DQN/cleanrl_utils/evals/c51_eval.py
+@@ -0,0 +1,62 @@
++import random
++from argparse import Namespace
++from typing import Callable
++
++import gym
++import numpy as np
++import torch
++
++
++def evaluate(
++    model_path: str,
++    make_env: Callable,
++    env_id: str,
++    eval_episodes: int,
++    run_name: str,
++    Model: torch.nn.Module,
++    device: torch.device = torch.device("cpu"),
++    epsilon: float = 0.05,
++    capture_video: bool = True,
++):
++    envs = gym.vector.SyncVectorEnv([make_env(env_id, 0, 0, capture_video, run_name)])
++    model_data = torch.load(model_path, map_location="cpu")
++    args = Namespace(**model_data["args"])
++    model = Model(envs, n_atoms=args.n_atoms, v_min=args.v_min, v_max=args.v_max)
++    model.load_state_dict(model_data["model_weights"])
++    model = model.to(device)
++    model.eval()
++
++    obs = envs.reset()
++    episodic_returns = []
++    while len(episodic_returns) < eval_episodes:
++        if random.random() < epsilon:
++            actions = np.array([envs.single_action_space.sample() for _ in range(envs.num_envs)])
++        else:
++            actions, _ = model.get_action(torch.Tensor(obs).to(device))
++            actions = actions.cpu().numpy()
++        next_obs, _, _, infos = envs.step(actions)
++        for info in infos:
++            if "episode" in info.keys():
++                print(f"eval_episode={len(episodic_returns)}, episodic_return={info['episode']['r']}")
++                episodic_returns += [info["episode"]["r"]]
++        obs = next_obs
++
++    return episodic_returns
++
++
++if __name__ == "__main__":
++    from huggingface_hub import hf_hub_download
++
++    from cleanrl.dqn import QNetwork, make_env
++
++    model_path = hf_hub_download(repo_id="cleanrl/C51-v1-dqn-seed1", filename="q_network.pth")
++    evaluate(
++        model_path,
++        make_env,
++        "CartPole-v1",
++        eval_episodes=10,
++        run_name=f"eval",
++        Model=QNetwork,
++        device="cpu",
++        capture_video=False,
++    )
+diff --git a/DQN/cleanrl_utils/evals/c51_jax_eval.py b/DQN/cleanrl_utils/evals/c51_jax_eval.py
+new file mode 100644
+index 0000000..abe1bed
+--- /dev/null
++++ b/DQN/cleanrl_utils/evals/c51_jax_eval.py
+@@ -0,0 +1,69 @@
++import random
++from argparse import Namespace
++from typing import Callable
++
++import flax
++import flax.linen as nn
++import gym
++import jax
++import jax.numpy as jnp
++import numpy as np
++
++
++def evaluate(
++    model_path: str,
++    make_env: Callable,
++    env_id: str,
++    eval_episodes: int,
++    run_name: str,
++    Model: nn.Module,
++    epsilon: float = 0.05,
++    capture_video: bool = True,
++    seed=1,
++):
++    envs = gym.vector.SyncVectorEnv([make_env(env_id, 0, 0, capture_video, run_name)])
++    obs = envs.reset()
++    model_data = None
++    with open(model_path, "rb") as f:
++        model_data = flax.serialization.from_bytes(model_data, f.read())
++    args = Namespace(**model_data["args"])
++    model = Model(action_dim=envs.single_action_space.n, n_atoms=args.n_atoms)
++    # q_key = jax.random.PRNGKey(seed)
++    params = model_data["model_weights"]
++    model.apply = jax.jit(model.apply)
++    atoms = jnp.asarray(np.linspace(args.v_min, args.v_max, num=args.n_atoms))
++
++    episodic_returns = []
++    while len(episodic_returns) < eval_episodes:
++        if random.random() < epsilon:
++            actions = np.array([envs.single_action_space.sample() for _ in range(envs.num_envs)])
++        else:
++            pmfs = model.apply(params, obs)
++            q_vals = (pmfs * atoms).sum(axis=-1)
++            actions = q_vals.argmax(axis=-1)
++            actions = jax.device_get(actions)
++        next_obs, _, _, infos = envs.step(actions)
++        for info in infos:
++            if "episode" in info.keys():
++                print(f"eval_episode={len(episodic_returns)}, episodic_return={info['episode']['r']}")
++                episodic_returns += [info["episode"]["r"]]
++        obs = next_obs
++
++    return episodic_returns
++
++
++if __name__ == "__main__":
++    from huggingface_hub import hf_hub_download
++
++    from cleanrl.dqn_jax import QNetwork, make_env
++
++    model_path = hf_hub_download(repo_id="vwxyzjn/CartPole-v1-dqn_jax-seed1", filename="dqn_jax.cleanrl_model")
++    evaluate(
++        model_path,
++        make_env,
++        "CartPole-v1",
++        eval_episodes=10,
++        run_name=f"eval",
++        Model=QNetwork,
++        capture_video=False,
++    )
+diff --git a/DQN/cleanrl_utils/evals/dqn_eval.py b/DQN/cleanrl_utils/evals/dqn_eval.py
+new file mode 100644
+index 0000000..9a040c3
+--- /dev/null
++++ b/DQN/cleanrl_utils/evals/dqn_eval.py
+@@ -0,0 +1,58 @@
++import random
++from typing import Callable
++
++import gym
++import numpy as np
++import torch
++
++
++def evaluate(
++    model_path: str,
++    make_env: Callable,
++    env_id: str,
++    eval_episodes: int,
++    run_name: str,
++    Model: torch.nn.Module,
++    device: torch.device = torch.device("cpu"),
++    epsilon: float = 0.05,
++    capture_video: bool = True,
++):
++    envs = gym.vector.SyncVectorEnv([make_env(env_id, 0, 0, capture_video, run_name)])
++    model = Model(envs).to(device)
++    model.load_state_dict(torch.load(model_path, map_location=device))
++    model.eval()
++
++    obs = envs.reset()
++    episodic_returns = []
++    while len(episodic_returns) < eval_episodes:
++        if random.random() < epsilon:
++            actions = np.array([envs.single_action_space.sample() for _ in range(envs.num_envs)])
++        else:
++            q_values = model(torch.Tensor(obs).to(device))
++            actions = torch.argmax(q_values, dim=1).cpu().numpy()
++        next_obs, _, _, infos = envs.step(actions)
++        for info in infos:
++            if "episode" in info.keys():
++                print(f"eval_episode={len(episodic_returns)}, episodic_return={info['episode']['r']}")
++                episodic_returns += [info["episode"]["r"]]
++        obs = next_obs
++
++    return episodic_returns
++
++
++if __name__ == "__main__":
++    from huggingface_hub import hf_hub_download
++
++    from cleanrl.dqn import QNetwork, make_env
++
++    model_path = hf_hub_download(repo_id="cleanrl/CartPole-v1-dqn-seed1", filename="q_network.pth")
++    evaluate(
++        model_path,
++        make_env,
++        "CartPole-v1",
++        eval_episodes=10,
++        run_name=f"eval",
++        Model=QNetwork,
++        device="cpu",
++        capture_video=False,
++    )
+diff --git a/DQN/cleanrl_utils/evals/dqn_jax_eval.py b/DQN/cleanrl_utils/evals/dqn_jax_eval.py
+new file mode 100644
+index 0000000..162e3e8
+--- /dev/null
++++ b/DQN/cleanrl_utils/evals/dqn_jax_eval.py
+@@ -0,0 +1,63 @@
++import random
++from typing import Callable
++
++import flax
++import flax.linen as nn
++import gym
++import jax
++import numpy as np
++
++
++def evaluate(
++    model_path: str,
++    make_env: Callable,
++    env_id: str,
++    eval_episodes: int,
++    run_name: str,
++    Model: nn.Module,
++    epsilon: float = 0.05,
++    capture_video: bool = True,
++    seed=1,
++):
++    envs = gym.vector.SyncVectorEnv([make_env(env_id, 0, 0, capture_video, run_name)])
++    obs = envs.reset()
++    model = Model(action_dim=envs.single_action_space.n)
++    q_key = jax.random.PRNGKey(seed)
++    params = model.init(q_key, obs)
++    with open(model_path, "rb") as f:
++        params = flax.serialization.from_bytes(params, f.read())
++    model.apply = jax.jit(model.apply)
++
++    episodic_returns = []
++    while len(episodic_returns) < eval_episodes:
++        if random.random() < epsilon:
++            actions = np.array([envs.single_action_space.sample() for _ in range(envs.num_envs)])
++        else:
++            q_values = model.apply(params, obs)
++            actions = q_values.argmax(axis=-1)
++            actions = jax.device_get(actions)
++        next_obs, _, _, infos = envs.step(actions)
++        for info in infos:
++            if "episode" in info.keys():
++                print(f"eval_episode={len(episodic_returns)}, episodic_return={info['episode']['r']}")
++                episodic_returns += [info["episode"]["r"]]
++        obs = next_obs
++
++    return episodic_returns
++
++
++if __name__ == "__main__":
++    from huggingface_hub import hf_hub_download
++
++    from cleanrl.dqn_jax import QNetwork, make_env
++
++    model_path = hf_hub_download(repo_id="vwxyzjn/CartPole-v1-dqn_jax-seed1", filename="dqn_jax.cleanrl_model")
++    evaluate(
++        model_path,
++        make_env,
++        "CartPole-v1",
++        eval_episodes=10,
++        run_name=f"eval",
++        Model=QNetwork,
++        capture_video=False,
++    )
+diff --git a/DQN/cleanrl_utils/evals/ppo_envpool_jax_eval.py b/DQN/cleanrl_utils/evals/ppo_envpool_jax_eval.py
+new file mode 100644
+index 0000000..7fe1b7d
+--- /dev/null
++++ b/DQN/cleanrl_utils/evals/ppo_envpool_jax_eval.py
+@@ -0,0 +1,104 @@
++import os
++from typing import Callable
++
++import cv2
++import flax
++import flax.linen as nn
++import jax
++import jax.numpy as jnp
++import numpy as np
++from moviepy.video.io.ImageSequenceClip import ImageSequenceClip
++
++
++def evaluate(
++    model_path: str,
++    make_env: Callable,
++    env_id: str,
++    eval_episodes: int,
++    run_name: str,
++    Model: nn.Module,
++    capture_video: bool = True,
++    seed=1,
++):
++    envs = make_env(env_id, seed, num_envs=1)()
++    Network, Actor, Critic = Model
++    next_obs = envs.reset()
++    network = Network()
++    actor = Actor(action_dim=envs.single_action_space.n)
++    critic = Critic()
++    key = jax.random.PRNGKey(seed)
++    key, network_key, actor_key, critic_key = jax.random.split(key, 4)
++    network_params = network.init(network_key, np.array([envs.single_observation_space.sample()]))
++    actor_params = actor.init(actor_key, network.apply(network_params, np.array([envs.single_observation_space.sample()])))
++    critic_params = critic.init(critic_key, network.apply(network_params, np.array([envs.single_observation_space.sample()])))
++    # note: critic_params is not used in this script
++    with open(model_path, "rb") as f:
++        (args, (network_params, actor_params, critic_params)) = flax.serialization.from_bytes(
++            (None, (network_params, actor_params, critic_params)), f.read()
++        )
++
++    @jax.jit
++    def get_action_and_value(
++        network_params: flax.core.FrozenDict,
++        actor_params: flax.core.FrozenDict,
++        next_obs: np.ndarray,
++        key: jax.random.PRNGKey,
++    ):
++        hidden = network.apply(network_params, next_obs)
++        logits = actor.apply(actor_params, hidden)
++        # sample action: Gumbel-softmax trick
++        # see https://stats.stackexchange.com/questions/359442/sampling-from-a-categorical-distribution
++        key, subkey = jax.random.split(key)
++        u = jax.random.uniform(subkey, shape=logits.shape)
++        action = jnp.argmax(logits - jnp.log(-jnp.log(u)), axis=1)
++        return action, key
++
++    # a simple non-vectorized version
++
++    episodic_returns = []
++    for episode in range(eval_episodes):
++        episodic_return = 0
++        next_obs = envs.reset()
++        terminated = False
++
++        if capture_video:
++            recorded_frames = []
++            # conversion from grayscale into rgb
++            recorded_frames.append(cv2.cvtColor(next_obs[0][-1], cv2.COLOR_GRAY2RGB))
++        while not terminated:
++            actions, key = get_action_and_value(network_params, actor_params, next_obs, key)
++            next_obs, _, _, infos = envs.step(np.array(actions))
++            episodic_return += infos["reward"][0]
++            terminated = sum(infos["terminated"]) == 1
++
++            if capture_video and episode == 0:
++                recorded_frames.append(cv2.cvtColor(next_obs[0][-1], cv2.COLOR_GRAY2RGB))
++
++            if terminated:
++                print(f"eval_episode={len(episodic_returns)}, episodic_return={episodic_return}")
++                episodic_returns.append(episodic_return)
++                if capture_video and episode == 0:
++                    clip = ImageSequenceClip(recorded_frames, fps=24)
++                    os.makedirs(f"videos/{run_name}", exist_ok=True)
++                    clip.write_videofile(f"videos/{run_name}/{episode}.mp4", logger="bar")
++
++    return episodic_returns
++
++
++if __name__ == "__main__":
++    from huggingface_hub import hf_hub_download
++
++    from cleanrl.ppo_atari_envpool_xla_jax_scan import Actor, Critic, Network, make_env
++
++    model_path = hf_hub_download(
++        repo_id="vwxyzjn/Pong-v5-ppo_atari_envpool_xla_jax_scan-seed1", filename="ppo_atari_envpool_xla_jax_scan.cleanrl_model"
++    )
++    evaluate(
++        model_path,
++        make_env,
++        "Pong-v5",
++        eval_episodes=10,
++        run_name=f"eval",
++        Model=(Network, Actor, Critic),
++        capture_video=False,
++    )
+diff --git a/DQN/cleanrl_utils/huggingface.py b/DQN/cleanrl_utils/huggingface.py
+new file mode 100644
+index 0000000..912d1f6
+--- /dev/null
++++ b/DQN/cleanrl_utils/huggingface.py
+@@ -0,0 +1,143 @@
++import argparse
++import sys
++from pathlib import Path
++from pprint import pformat
++from typing import List
++
++import numpy as np
++
++HUGGINGFACE_VIDEO_PREVIEW_FILE_NAME = "replay.mp4"
++HUGGINGFACE_README_FILE_NAME = "README.md"
++
++
++def push_to_hub(
++    args: argparse.Namespace,
++    episodic_returns: List,
++    repo_id: str,
++    algo_name: str,
++    folder_path: str,
++    video_folder_path: str = "",
++    revision: str = "main",
++    create_pr: bool = False,
++    private: bool = False,
++):
++    # Step 1: lazy import and create / read a huggingface repo
++    from huggingface_hub import CommitOperationAdd, CommitOperationDelete, HfApi
++    from huggingface_hub.repocard import metadata_eval_result, metadata_save
++
++    api = HfApi()
++    repo_url = api.create_repo(
++        repo_id=repo_id,
++        exist_ok=True,
++        private=private,
++    )
++    # parse the default entity
++    entity, repo = repo_url.split("/")[-2:]
++    repo_id = f"{entity}/{repo}"
++
++    # Step 2: clean up data
++    # delete previous tfevents and mp4 files
++    operations = [
++        CommitOperationDelete(path_in_repo=file)
++        for file in api.list_repo_files(repo_id=repo_id)
++        if ".tfevents" in file or file.endswith(".mp4")
++    ]
++
++    # Step 3: Generate the model card
++    algorithm_variant_filename = sys.argv[0].split("/")[-1]
++    model_card = f"""
++# (CleanRL) **{algo_name}** Agent Playing **{args.env_id}**
++
++This is a trained model of a {algo_name} agent playing {args.env_id}.
++The model was trained by using [CleanRL](https://github.com/vwxyzjn/cleanrl) and the most up-to-date training code can be
++found [here](https://github.com/vwxyzjn/cleanrl/blob/master/cleanrl/{args.exp_name}.py).
++
++## Get Started
++
++To use this model, please install the `cleanrl` package with the following command:
++
++```
++pip install "cleanrl[{args.exp_name}]"
++python -m cleanrl_utils.enjoy --exp-name {args.exp_name} --env-id {args.env_id}
++```
++
++Please refer to the [documentation](https://docs.cleanrl.dev/get-started/zoo/) for more detail.
++
++
++## Command to reproduce the training
++
++```bash
++curl -OL https://huggingface.co/{repo_id}/raw/main/{algorithm_variant_filename}
++curl -OL https://huggingface.co/{repo_id}/raw/main/pyproject.toml
++curl -OL https://huggingface.co/{repo_id}/raw/main/poetry.lock
++poetry install --all-extras
++python {algorithm_variant_filename} {" ".join(sys.argv[1:])}
++```
++
++# Hyperparameters
++```python
++{pformat(vars(args))}
++```
++    """
++    readme_path = Path(folder_path) / HUGGINGFACE_README_FILE_NAME
++    readme = model_card
++
++    # metadata
++    metadata = {}
++    metadata["tags"] = [
++        args.env_id,
++        "deep-reinforcement-learning",
++        "reinforcement-learning",
++        "custom-implementation",
++    ]
++    metadata["library_name"] = "cleanrl"
++    eval = metadata_eval_result(
++        model_pretty_name=algo_name,
++        task_pretty_name="reinforcement-learning",
++        task_id="reinforcement-learning",
++        metrics_pretty_name="mean_reward",
++        metrics_id="mean_reward",
++        metrics_value=f"{np.average(episodic_returns):.2f} +/- {np.std(episodic_returns):.2f}",
++        dataset_pretty_name=args.env_id,
++        dataset_id=args.env_id,
++    )
++    metadata = {**metadata, **eval}
++
++    with open(readme_path, "w", encoding="utf-8") as f:
++        f.write(readme)
++    metadata_save(readme_path, metadata)
++
++    # fetch mp4 files
++    if video_folder_path:
++        # Push all video files
++        video_files = list(Path(video_folder_path).glob("*.mp4"))
++        operations += [CommitOperationAdd(path_or_fileobj=str(file), path_in_repo=str(file)) for file in video_files]
++        # Push latest one in root directory
++        latest_file = max(video_files, key=lambda file: int("".join(filter(str.isdigit, file.stem))))
++        operations.append(
++            CommitOperationAdd(path_or_fileobj=str(latest_file), path_in_repo=HUGGINGFACE_VIDEO_PREVIEW_FILE_NAME)
++        )
++
++    # fetch folder files
++    operations += [
++        CommitOperationAdd(path_or_fileobj=str(item), path_in_repo=str(item.relative_to(folder_path)))
++        for item in Path(folder_path).glob("*")
++    ]
++
++    # fetch source code
++    operations.append(CommitOperationAdd(path_or_fileobj=sys.argv[0], path_in_repo=sys.argv[0].split("/")[-1]))
++
++    # upload poetry files at the root of the repository
++    git_root = Path(__file__).parent.parent
++    operations.append(CommitOperationAdd(path_or_fileobj=str(git_root / "pyproject.toml"), path_in_repo="pyproject.toml"))
++    operations.append(CommitOperationAdd(path_or_fileobj=str(git_root / "poetry.lock"), path_in_repo="poetry.lock"))
++
++    api.create_commit(
++        repo_id=repo_id,
++        operations=operations,
++        commit_message="pushing model",
++        revision=revision,
++        create_pr=create_pr,
++    )
++    print(f"Model pushed to {repo_url}")
++    return repo_url
+diff --git a/DQN/cleanrl_utils/paper_plot.py b/DQN/cleanrl_utils/paper_plot.py
+new file mode 100644
+index 0000000..da0091e
+--- /dev/null
++++ b/DQN/cleanrl_utils/paper_plot.py
+@@ -0,0 +1,307 @@
++import argparse
++import os
++import pickle
++from os import path
++
++import matplotlib as mpl
++import matplotlib.pyplot as plt
++import numpy as np
++import pandas as pd
++import seaborn as sns
++import wandb
++
++sns.set_style("whitegrid")
++mpl.rcParams["text.usetex"] = True
++mpl.rcParams["text.latex.preamble"] = r"\usepackage{amsmath}"  # for \text command
++
++parser = argparse.ArgumentParser(description="CleanRL Plots")
++# Common arguments
++parser.add_argument(
++    "--wandb-project", type=str, default="cleanrl/cleanrl.benchmark", help="the name of wandb project (e.g. cleanrl/cleanrl)"
++)
++parser.add_argument(
++    "--feature-of-interest", type=str, default="charts/episodic_return", help="which feature to be plotted on the y-axis"
++)
++parser.add_argument("--hyper-params-tuned", nargs="+", default=[], help="the hyper parameters tuned")
++# parser.add_argument('--scan-history', type=lambda x:bool(strtobool(x)), default=False, nargs='?', const=True,
++#                     help='if toggled, cuda will not be enabled by default')
++parser.add_argument("--interested-exp-names", nargs="+", default=[], help="the hyper parameters tuned")
++parser.add_argument("--samples", type=int, default=500, help="the sampled point of the run")
++parser.add_argument("--smooth-weight", type=float, default=0.95, help="the weight parameter of the exponential moving average")
++parser.add_argument(
++    "--last-n-episodes",
++    type=int,
++    default=10,
++    help="for analysis only; the last n episodes from which the mean of the feature of interest is calculated",
++)
++parser.add_argument("--num-points-x-axis", type=int, default=500, help="the number of points in the x-axis")
++parser.add_argument("--font-size", type=int, default=18, help="the font size of the plots")
++parser.add_argument("--x-label", type=str, default="Time Steps", help="the label of x-axis")
++parser.add_argument("--y-label", type=str, default="Episodic Return", help="the label of y-axis")
++parser.add_argument("--y-lim-bottom", type=float, default=0.0, help="the bottom limit for the y-axis")
++parser.add_argument("--output-format", type=str, default="pdf", help="either `pdf`, `png`, or `svg`")
++args = parser.parse_args()
++api = wandb.Api()
++
++# hacks
++env_dict = {
++    # 'MicrortsAttackShapedReward-v1': 'MicrortsAttackHRL-v1',
++    # 'MicrortsProduceCombatUnitsShapedReward-v1':  'MicrortsProduceCombatUnitHRL-v1',
++    # 'MicrortsRandomEnemyShapedReward3-v1': 'MicrortsRandomEnemyHRL3-v1',
++}
++exp_convert_dict = {
++    "ppo_atari_visual": "PPO",
++    "dqn_atari_visual": "DQN",
++    "apex_dqn_atari_visual": "Ape-X DQN",
++    "c51_atari_visual": "C51",
++    # 'rnd_ppo_gamma_0.999_nocliploss_lr_1e-4_128envs_entcoef_0.001_stickyaction': "PPO RND",
++    "ddpg_continuous_action": "DDPG",
++    # 'dqn': 'DQN',
++    # 'ppg_procgen_fast': 'PPG',
++    # 'ppg_procgen_impala_cnn': 'PPG-IMPALA-CNN',
++    # 'ppo': "PPO",
++    # 'ppo_car_racing': "PPO",
++    "ppo_continuous_action": "PPO",
++    # 'ppo_procgen_fast': "PPO",
++    # "ppo_procgen_impala_cnn": "PPO-IMPALA-CNN",
++    "td3_continuous_action": "TD3",
++}
++
++# args.feature_of_interest = 'charts/episodic_return'
++feature_name = args.feature_of_interest.replace("/", "_")
++if not os.path.exists(feature_name):
++    os.makedirs(feature_name)
++    with open(f"{feature_name}/cache.pkl", "wb") as handle:
++        pickle.dump([[], [], [], {}, [], set()], handle, protocol=pickle.HIGHEST_PROTOCOL)
++with open(f"{feature_name}/cache.pkl", "rb") as handle:
++    summary_list, config_list, name_list, envs, exp_names, ids = pickle.load(handle)
++
++# Change oreilly-class/cifar to <entity/project-name>
++runs = api.runs(args.wandb_project)
++data = []
++for idx, run in enumerate(runs):
++    if run.id not in ids:
++        ids.add(run.id)
++        if args.feature_of_interest in run.summary:
++            metrics_dataframe = run.history(keys=[args.feature_of_interest, "global_step"], samples=args.samples)
++            exp_name = run.config["exp_name"]
++            for param in args.hyper_params_tuned:
++                if param in run.config:
++                    exp_name += "-" + param + "-" + str(run.config[param]) + "-"
++
++            metrics_dataframe.insert(len(metrics_dataframe.columns), "algo", exp_name)
++            exp_names += [exp_name]
++            metrics_dataframe.insert(len(metrics_dataframe.columns), "seed", run.config["seed"])
++
++            data += [metrics_dataframe]
++            if run.config["env_id"] not in envs:
++                envs[run.config["env_id"]] = [metrics_dataframe]
++                envs[run.config["env_id"] + "total_timesteps"] = run.config["total_timesteps"]
++            else:
++                envs[run.config["env_id"]] += [metrics_dataframe]
++
++            # run.summary are the output key/values like accuracy.  We call ._json_dict to omit large files
++            summary_list.append(run.summary._json_dict)
++
++            # run.config is the input metrics.  We remove special values that start with _.
++            config_list.append({k: v for k, v in run.config.items() if not k.startswith("_")})
++
++            # run.name is the name of the run.
++            name_list.append(run.name)
++
++
++summary_df = pd.DataFrame.from_records(summary_list)
++config_df = pd.DataFrame.from_records(config_list)
++name_df = pd.DataFrame({"name": name_list})
++all_df = pd.concat([name_df, config_df, summary_df], axis=1)
++# data = pd.concat(data, ignore_index=True)
++with open(f"{feature_name}/cache.pkl", "wb") as handle:
++    pickle.dump([summary_list, config_list, name_list, envs, exp_names, ids], handle, protocol=pickle.HIGHEST_PROTOCOL)
++print("data loaded")
++
++# https://stackoverflow.com/questions/42281844/what-is-the-mathematics-behind-the-smoothing-parameter-in-tensorboards-scalar#_=_
++def smooth(scalars, weight):  # Weight between 0 and 1
++    last = scalars[0]  # First value in the plot (first timestep)
++    smoothed = list()
++    for point in scalars:
++        smoothed_val = last * weight + (1 - weight) * point  # Calculate smoothed value
++        smoothed.append(smoothed_val)  # Save it
++        last = smoothed_val  # Anchor the last smoothed value
++
++    return smoothed
++
++
++# smoothing
++for env in envs:
++    if not env.endswith("total_timesteps"):
++        for idx, metrics_dataframe in enumerate(envs[env]):
++            envs[env][idx] = metrics_dataframe.dropna(subset=[args.feature_of_interest])
++#             envs[env][idx][args.feature_of_interest] = smooth(metrics_dataframe[args.feature_of_interest], 0.85)
++
++sns.set(style="darkgrid")
++
++
++def get_df_for_env(env_id):
++    env_total_timesteps = envs[env_id + "total_timesteps"]
++    env_increment = env_total_timesteps / 500
++    envs_same_x_axis = []
++    for sampled_run in envs[env_id]:
++        df = pd.DataFrame(columns=sampled_run.columns)
++        x_axis = [i * env_increment for i in range(500 - 2)]
++        current_row = 0
++        for timestep in x_axis:
++            while sampled_run.iloc[current_row]["global_step"] < timestep:
++                current_row += 1
++                if current_row > len(sampled_run) - 2:
++                    break
++            if current_row > len(sampled_run) - 2:
++                break
++            temp_row = sampled_run.iloc[current_row].copy()
++            temp_row["global_step"] = timestep
++            df = df.append(temp_row)
++
++        envs_same_x_axis += [df]
++    return pd.concat(envs_same_x_axis, ignore_index=True)
++
++
++def export_legend(ax, filename="legend.pdf"):
++    try:
++        # import matplotlib as mpl
++        # mpl.rcParams['text.usetex'] = True
++        # mpl.rcParams['text.latex.preamble'] = [r'\usepackage{amsmath}'] #for \text command
++        fig2 = plt.figure()
++        ax2 = fig2.add_subplot()
++        ax2.axis("off")
++        handles, labels = ax.get_legend_handles_labels()
++
++        legend = ax2.legend(
++            handles=handles, labels=labels, frameon=False, loc="lower center", ncol=6, fontsize=20, handlelength=1
++        )
++        for text in legend.get_texts():
++            if text.get_text() in exp_convert_dict:
++                text.set_text(exp_convert_dict[text.get_text()])
++            text.set_text(text.get_text().replace("_", "-"))
++        for line in legend.get_lines():
++            line.set_linewidth(4.0)
++        fig = legend.figure
++        fig.canvas.draw()
++
++        bbox = legend.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
++        fig.savefig(filename, dpi="figure", bbox_inches=bbox)
++        fig.clf()
++    except:
++        print(f"export legend failed: {filename}")
++
++
++if not os.path.exists(f"{feature_name}/data"):
++    os.makedirs(f"{feature_name}/data")
++if not os.path.exists(f"{feature_name}/plots"):
++    os.makedirs(f"{feature_name}/plots")
++if not os.path.exists(f"{feature_name}/legends"):
++    os.makedirs(f"{feature_name}/legends")
++
++
++interested_exp_names = sorted(list(exp_convert_dict.keys()))  # ['ppo_continuous_action', 'ppo_atari_visual']
++palette = sns.color_palette(n_colors=len(set(exp_convert_dict.values())))
++palette_dict = dict(zip(set(exp_convert_dict.values()), palette))
++current_palette_dict = dict(zip(interested_exp_names, [palette_dict[exp_convert_dict[k]] for k in interested_exp_names]))
++if args.interested_exp_names:
++    interested_exp_names = args.interested_exp_names
++print(interested_exp_names)
++# raise
++# print(current_palette_dict)
++
++legend_df = pd.DataFrame()
++
++# hack
++algos_in_legend = []
++
++if args.font_size:
++    plt.rc("axes", titlesize=args.font_size)  # fontsize of the axes title
++    plt.rc("axes", labelsize=args.font_size)  # fontsize of the x and y labels
++    plt.rc("xtick", labelsize=args.font_size)  # fontsize of the tick labels
++    plt.rc("ytick", labelsize=args.font_size)  # fontsize of the tick labels
++    plt.rc("legend", fontsize=args.font_size)  # legend fontsize
++
++stats = {item: [] for item in ["env_id", "exp_name", args.feature_of_interest]}
++# uncommenet the following to generate all figures
++for env in set(all_df["env_id"]):
++    if not path.exists(f"{feature_name}/data/{env}.pkl"):
++        with open(f"{feature_name}/data/{env}.pkl", "wb") as handle:
++            data = get_df_for_env(env)
++            data["seed"] = data["seed"].astype(float)
++            data[args.feature_of_interest] = data[args.feature_of_interest].astype(float)
++            pickle.dump(data, handle, protocol=pickle.HIGHEST_PROTOCOL)
++    else:
++        with open(f"{feature_name}/data/{env}.pkl", "rb") as handle:
++            data = pickle.load(handle)
++            print(f"{env}'s data loaded")
++
++    def _smooth(df):
++        df[args.feature_of_interest] = smooth(list(df[args.feature_of_interest]), args.smooth_weight)
++        return df
++
++    plot_data = data.groupby(["seed", "algo"]).apply(_smooth).loc[data["algo"].isin(interested_exp_names)]
++    if len(plot_data) == 0:
++        continue
++    ax = sns.lineplot(
++        data=plot_data, x="global_step", y=args.feature_of_interest, hue="algo", ci="sd", palette=current_palette_dict
++    )
++    ax.ticklabel_format(style="sci", scilimits=(0, 0), axis="x")
++    ax.set(xlabel=args.x_label, ylabel=args.y_label)
++    ax.legend().remove()
++    if args.y_lim_bottom:
++        plt.ylim(bottom=args.y_lim_bottom)
++    plt.title(env)
++    plt.tight_layout()
++    plt.savefig(f"{feature_name}/plots/{env}.{args.output_format}")
++    plt.clf()
++
++    env_algos = data["algo"].unique()
++    for algo in env_algos:
++        algo_data = data.loc[data["algo"].isin([algo])]
++        last_n_episodes_global_step = sorted(algo_data["global_step"].unique())[-args.last_n_episodes]
++        last_n_episodes_features = (
++            algo_data[algo_data["global_step"] > last_n_episodes_global_step]
++            .groupby(["seed"])
++            .mean()[args.feature_of_interest]
++        )
++
++        for item in last_n_episodes_features:
++            stats[args.feature_of_interest] += [item]
++            if algo in exp_convert_dict:
++                stats["exp_name"] += [exp_convert_dict[algo]]
++            else:
++                stats["exp_name"] += [algo]
++            stats["env_id"] += [env]
++
++    # export legend
++    # legend_df = pd.DataFrame()
++    # legend_df = legend_df.append(plot_data)
++    # legend_df = legend_df.reset_index()
++    # ax = sns.lineplot(data=legend_df, x="global_step", y=args.feature_of_interest, hue="algo", ci='sd', palette=current_palette_dict)
++    # ax.set(xlabel=args.x_label, ylabel=args.y_label)
++    # ax.legend().remove()
++    # export_legend(ax, f"{feature_name}/legends/{env}.{args.output_format}")
++    # plt.clf()
++
++    # hack
++    algo_in_legend = exp_convert_dict[plot_data["algo"].iloc[0]]
++    if algo_in_legend not in algos_in_legend:
++        legend_df = legend_df.append(plot_data.iloc[:5])
++        algos_in_legend += [algo_in_legend]
++
++legend_df = legend_df.reset_index()
++ax = sns.lineplot(
++    data=legend_df, x="global_step", y=args.feature_of_interest, hue="algo", ci="sd", palette=current_palette_dict
++)
++ax.set(xlabel=args.x_label, ylabel=args.y_label)
++ax.legend().remove()
++export_legend(ax, f"{feature_name}/legend.{args.output_format}")
++plt.clf()
++
++
++# analysis
++stats_df = pd.DataFrame(stats)
++g = stats_df.groupby(["env_id", "exp_name"]).agg(lambda x: f"{np.mean(x):.2f} ± {np.std(x):.2f}")
++print(g.reset_index().pivot("exp_name", "env_id", args.feature_of_interest).to_latex().replace("±", r"$\pm$"))
+diff --git a/DQN/cleanrl_utils/plot.py b/DQN/cleanrl_utils/plot.py
+new file mode 100644
+index 0000000..04be292
+--- /dev/null
++++ b/DQN/cleanrl_utils/plot.py
+@@ -0,0 +1,289 @@
++import argparse
++import os
++import pickle
++from os import path
++
++import matplotlib as mpl
++import matplotlib.pyplot as plt
++import numpy as np
++import pandas as pd
++import seaborn as sns
++import wandb
++
++mpl.rcParams["text.usetex"] = True
++mpl.rcParams["text.latex.preamble"] = r"\usepackage{amsmath}"  # for \text command
++
++
++parser = argparse.ArgumentParser(description="CleanRL Plots")
++# Common arguments
++parser.add_argument(
++    "--wandb-project", type=str, default="cleanrl/cleanrl.benchmark", help="the name of wandb project (e.g. cleanrl/cleanrl)"
++)
++parser.add_argument(
++    "--feature-of-interest", type=str, default="charts/episodic_return", help="which feature to be plotted on the y-axis"
++)
++parser.add_argument("--hyper-params-tuned", nargs="+", default=[], help="the hyper parameters tuned")
++# parser.add_argument('--scan-history', type=lambda x:bool(strtobool(x)), default=False, nargs='?', const=True,
++#                     help='if toggled, cuda will not be enabled by default')
++parser.add_argument("--interested-exp-names", nargs="+", default=[], help="the hyper parameters tuned")
++parser.add_argument("--samples", type=int, default=500, help="the sampled point of the run")
++parser.add_argument("--smooth-weight", type=float, default=0.90, help="the weight parameter of the exponential moving average")
++parser.add_argument(
++    "--last-n-episodes",
++    type=int,
++    default=10,
++    help="for analysis only; the last n episodes from which the mean of the feature of interest is calculated",
++)
++parser.add_argument("--num-points-x-axis", type=int, default=500, help="the number of points in the x-axis")
++parser.add_argument("--font-size", type=int, default=18, help="the font size of the plots")
++parser.add_argument("--x-label", type=str, default="Time Steps", help="the label of x-axis")
++parser.add_argument("--y-label", type=str, default="Episodic Return", help="the label of y-axis")
++parser.add_argument("--y-lim-bottom", type=float, default=0.0, help="the bottom limit for the y-axis")
++parser.add_argument("--output-format", type=str, default="pdf", help="either `pdf`, `png`, or `svg`")
++args = parser.parse_args()
++api = wandb.Api()
++
++# hacks
++env_dict = {
++    # 'MicrortsAttackShapedReward-v1': 'MicrortsAttackHRL-v1',
++    # 'MicrortsProduceCombatUnitsShapedReward-v1':  'MicrortsProduceCombatUnitHRL-v1',
++    # 'MicrortsRandomEnemyShapedReward3-v1': 'MicrortsRandomEnemyHRL3-v1',
++}
++exp_convert_dict = {
++    "ppo_atari_visual": "PPO",
++    "dqn_atari_visual": "DQN",
++    "apex_dqn_atari_visual": "Ape-X DQN",
++    "c51_atari_visual": "C51",
++    # 'ppo_no_mask-0': 'Invalid action penalty, $r_{\\text{invalid}}=0$',
++    # 'ppo_no_mask--0.1': 'Invalid action penalty, $r_{\\text{invalid}}=-0.1$',
++    # 'ppo_no_mask--0.01': 'Invalid action penalty, $r_{\\text{invalid}}=-0.01$',
++    # 'ppo_no_mask--1': 'Invalid action penalty, $r_{\\text{invalid}}=-1$',
++    # 'ppo-maskrm': 'Masking removed',
++    # 'ppo_no_adj': 'Naive invalid action masking',
++}
++
++# args.feature_of_interest = 'charts/episodic_return'
++feature_name = args.feature_of_interest.replace("/", "_")
++if not os.path.exists(feature_name):
++    os.makedirs(feature_name)
++    with open(f"{feature_name}/cache.pkl", "wb") as handle:
++        pickle.dump([[], [], [], {}, [], set()], handle, protocol=pickle.HIGHEST_PROTOCOL)
++with open(f"{feature_name}/cache.pkl", "rb") as handle:
++    summary_list, config_list, name_list, envs, exp_names, ids = pickle.load(handle)
++
++# Change oreilly-class/cifar to <entity/project-name>
++runs = api.runs(args.wandb_project)
++data = []
++for idx, run in enumerate(runs):
++    if run.id not in ids:
++        ids.add(run.id)
++        if args.feature_of_interest in run.summary:
++            metrics_dataframe = run.history(keys=[args.feature_of_interest, "global_step"], samples=args.samples)
++            exp_name = run.config["exp_name"]
++            for param in args.hyper_params_tuned:
++                if param in run.config:
++                    exp_name += "-" + param + "-" + str(run.config[param]) + "-"
++
++            metrics_dataframe.insert(len(metrics_dataframe.columns), "algo", exp_name)
++            exp_names += [exp_name]
++            metrics_dataframe.insert(len(metrics_dataframe.columns), "seed", run.config["seed"])
++
++            data += [metrics_dataframe]
++            if run.config["env_id"] not in envs:
++                envs[run.config["env_id"]] = [metrics_dataframe]
++                envs[run.config["env_id"] + "total_timesteps"] = run.config["total_timesteps"]
++            else:
++                envs[run.config["env_id"]] += [metrics_dataframe]
++
++            # run.summary are the output key/values like accuracy.  We call ._json_dict to omit large files
++            summary_list.append(run.summary._json_dict)
++
++            # run.config is the input metrics.  We remove special values that start with _.
++            config_list.append({k: v for k, v in run.config.items() if not k.startswith("_")})
++
++            # run.name is the name of the run.
++            name_list.append(run.name)
++
++
++summary_df = pd.DataFrame.from_records(summary_list)
++config_df = pd.DataFrame.from_records(config_list)
++name_df = pd.DataFrame({"name": name_list})
++all_df = pd.concat([name_df, config_df, summary_df], axis=1)
++# data = pd.concat(data, ignore_index=True)
++with open(f"{feature_name}/cache.pkl", "wb") as handle:
++    pickle.dump([summary_list, config_list, name_list, envs, exp_names, ids], handle, protocol=pickle.HIGHEST_PROTOCOL)
++print("data loaded")
++
++# https://stackoverflow.com/questions/42281844/what-is-the-mathematics-behind-the-smoothing-parameter-in-tensorboards-scalar#_=_
++def smooth(scalars, weight):  # Weight between 0 and 1
++    last = scalars[0]  # First value in the plot (first timestep)
++    smoothed = list()
++    for point in scalars:
++        smoothed_val = last * weight + (1 - weight) * point  # Calculate smoothed value
++        smoothed.append(smoothed_val)  # Save it
++        last = smoothed_val  # Anchor the last smoothed value
++
++    return smoothed
++
++
++# smoothing
++for env in envs:
++    if not env.endswith("total_timesteps"):
++        for idx, metrics_dataframe in enumerate(envs[env]):
++            envs[env][idx] = metrics_dataframe.dropna(subset=[args.feature_of_interest])
++#             envs[env][idx][args.feature_of_interest] = smooth(metrics_dataframe[args.feature_of_interest], 0.85)
++
++sns.set(style="darkgrid")
++
++
++def get_df_for_env(env_id):
++    env_total_timesteps = envs[env_id + "total_timesteps"]
++    env_increment = env_total_timesteps / 500
++    envs_same_x_axis = []
++    for sampled_run in envs[env_id]:
++        df = pd.DataFrame(columns=sampled_run.columns)
++        x_axis = [i * env_increment for i in range(500 - 2)]
++        current_row = 0
++        for timestep in x_axis:
++            while sampled_run.iloc[current_row]["global_step"] < timestep:
++                current_row += 1
++                if current_row > len(sampled_run) - 2:
++                    break
++            if current_row > len(sampled_run) - 2:
++                break
++            temp_row = sampled_run.iloc[current_row].copy()
++            temp_row["global_step"] = timestep
++            df = df.append(temp_row)
++
++        envs_same_x_axis += [df]
++    return pd.concat(envs_same_x_axis, ignore_index=True)
++
++
++def export_legend(ax, filename="legend.pdf"):
++    try:
++        # import matplotlib as mpl
++        # mpl.rcParams['text.usetex'] = True
++        # mpl.rcParams['text.latex.preamble'] = [r'\usepackage{amsmath}'] #for \text command
++        fig2 = plt.figure()
++        ax2 = fig2.add_subplot()
++        ax2.axis("off")
++        handles, labels = ax.get_legend_handles_labels()
++
++        legend = ax2.legend(
++            handles=handles, labels=labels, frameon=False, loc="lower center", ncol=4, fontsize=20, handlelength=1
++        )
++        for text in legend.get_texts():
++            if text.get_text() in exp_convert_dict:
++                text.set_text(exp_convert_dict[text.get_text()])
++            text.set_text(text.get_text().replace("_", "-"))
++        for line in legend.get_lines():
++            line.set_linewidth(4.0)
++        fig = legend.figure
++        fig.canvas.draw()
++
++        bbox = legend.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
++        fig.savefig(filename, dpi="figure", bbox_inches=bbox)
++        fig.clf()
++    except:
++        print(f"export legend failed: {filename}")
++
++
++if not os.path.exists(f"{feature_name}/data"):
++    os.makedirs(f"{feature_name}/data")
++if not os.path.exists(f"{feature_name}/plots"):
++    os.makedirs(f"{feature_name}/plots")
++if not os.path.exists(f"{feature_name}/legends"):
++    os.makedirs(f"{feature_name}/legends")
++
++
++interested_exp_names = sorted(list(set(exp_names)))  # ['ppo_continuous_action', 'ppo_atari_visual']
++current_palette = sns.color_palette(n_colors=len(interested_exp_names))
++current_palette_dict = dict(zip(interested_exp_names, current_palette))
++if args.interested_exp_names:
++    interested_exp_names = args.interested_exp_names
++print(interested_exp_names)
++# print(current_palette_dict)
++legend_df = pd.DataFrame()
++
++if args.font_size:
++    plt.rc("axes", titlesize=args.font_size)  # fontsize of the axes title
++    plt.rc("axes", labelsize=args.font_size)  # fontsize of the x and y labels
++    plt.rc("xtick", labelsize=args.font_size)  # fontsize of the tick labels
++    plt.rc("ytick", labelsize=args.font_size)  # fontsize of the tick labels
++    plt.rc("legend", fontsize=args.font_size)  # legend fontsize
++
++stats = {item: [] for item in ["env_id", "exp_name", args.feature_of_interest]}
++# uncommenet the following to generate all figures
++for env in set(all_df["env_id"]):
++    if not path.exists(f"{feature_name}/data/{env}.pkl"):
++        with open(f"{feature_name}/data/{env}.pkl", "wb") as handle:
++            data = get_df_for_env(env)
++            data["seed"] = data["seed"].astype(float)
++            data[args.feature_of_interest] = data[args.feature_of_interest].astype(float)
++            pickle.dump(data, handle, protocol=pickle.HIGHEST_PROTOCOL)
++    else:
++        with open(f"{feature_name}/data/{env}.pkl", "rb") as handle:
++            data = pickle.load(handle)
++            print(f"{env}'s data loaded")
++
++    def _smooth(df):
++        df[args.feature_of_interest] = smooth(list(df[args.feature_of_interest]), args.smooth_weight)
++        return df
++
++    plot_data = data.groupby(["seed", "algo"]).apply(_smooth).loc[data["algo"].isin(interested_exp_names)]
++    ax = sns.lineplot(
++        data=plot_data,
++        x="global_step",
++        y=args.feature_of_interest,
++        hue="algo",
++        ci="sd",
++    )  # , palette=current_palette_dict
++    ax.ticklabel_format(style="sci", scilimits=(0, 0), axis="x")
++    ax.set(xlabel=args.x_label, ylabel=args.y_label)
++    ax.legend().remove()
++    if args.y_lim_bottom:
++        plt.ylim(bottom=args.y_lim_bottom)
++    # plt.title(env)
++    plt.tight_layout()
++    plt.savefig(f"{feature_name}/plots/{env}.{args.output_format}")
++    plt.clf()
++
++    # export legend
++    legend_df = pd.DataFrame()
++    legend_df = legend_df.append(plot_data)
++    legend_df = legend_df.reset_index()
++    ax = sns.lineplot(
++        data=legend_df,
++        x="global_step",
++        y=args.feature_of_interest,
++        hue="algo",
++        ci="sd",
++    )  # , palette=current_palette_dict
++    ax.set(xlabel="Time Steps", ylabel="Average Episode Reward")
++    ax.legend().remove()
++    export_legend(ax, f"{feature_name}/legends/{env}.{args.output_format}")
++    plt.clf()
++
++    env_algos = data["algo"].unique()
++    for algo in env_algos:
++        algo_data = data.loc[data["algo"].isin([algo])]
++        last_n_episodes_global_step = sorted(algo_data["global_step"].unique())[-args.last_n_episodes]
++        last_n_episodes_features = (
++            algo_data[algo_data["global_step"] > last_n_episodes_global_step]
++            .groupby(["seed"])
++            .mean()[args.feature_of_interest]
++        )
++
++        for item in last_n_episodes_features:
++            stats[args.feature_of_interest] += [item]
++            if algo in exp_convert_dict:
++                stats["exp_name"] += [exp_convert_dict[algo]]
++            else:
++                stats["exp_name"] += [algo]
++            stats["env_id"] += [env]
++
++
++# analysis
++stats_df = pd.DataFrame(stats)
++g = stats_df.groupby(["env_id", "exp_name"]).agg(lambda x: f"{np.mean(x):.2f} ± {np.std(x):.2f}")
++print(g.reset_index().pivot("exp_name", "env_id", args.feature_of_interest).to_latex().replace("±", r"$\pm$"))
+diff --git a/DQN/cleanrl_utils/plot_individual.py b/DQN/cleanrl_utils/plot_individual.py
+new file mode 100644
+index 0000000..7864363
+--- /dev/null
++++ b/DQN/cleanrl_utils/plot_individual.py
+@@ -0,0 +1,328 @@
++import argparse
++import os
++import pickle
++from os import path
++
++import matplotlib.pyplot as plt
++import numpy as np
++import pandas as pd
++import seaborn as sns
++import wandb
++
++parser = argparse.ArgumentParser(description="CleanRL Plots")
++# Common arguments
++parser.add_argument(
++    "--wandb-project",
++    type=str,
++    default="anonymous-rl-code/action-guidance",
++    help="the name of wandb project (e.g. cleanrl/cleanrl)",
++)
++parser.add_argument(
++    "--feature-of-interest",
++    type=str,
++    default="charts/episodic_return/ProduceCombatUnitRewardFunction",
++    help="which feature to be plotted on the y-axis",
++)
++parser.add_argument("--hyper-params-tuned", nargs="+", default=["shift", "adaptation"], help="the hyper parameters tuned")
++# parser.add_argument('--scan-history', type=lambda x:bool(strtobool(x)), default=False, nargs='?', const=True,
++#                     help='if toggled, cuda will not be enabled by default')
++parser.add_argument(
++    "--interested-exp-names",
++    nargs="+",
++    default=[
++        "ppo_ac_positive_reward-shift-800000--adaptation-1000000--positive_likelihood-1-",
++        "ppo_ac_positive_reward-shift-800000--adaptation-1000000--positive_likelihood-0-",
++    ],
++    help="the hyper parameters tuned",
++)
++parser.add_argument("--samples", type=int, default=500, help="the sampled point of the run")
++parser.add_argument("--smooth-weight", type=float, default=0.90, help="the weight parameter of the exponential moving average")
++parser.add_argument(
++    "--last-n-episodes",
++    type=int,
++    default=50,
++    help="for analysis only; the last n episodes from which the mean of the feature of interest is calculated",
++)
++parser.add_argument("--num-points-x-axis", type=int, default=500, help="the number of points in the x-axis")
++parser.add_argument("--font-size", type=int, default=13, help="the font size of the plots")
++parser.add_argument("--x-label", type=str, default="Time Steps", help="the label of x-axis")
++parser.add_argument("--y-label", type=str, default="Average Episode Reward", help="the label of y-axis")
++parser.add_argument("--y-lim-bottom", type=float, default=0.0, help="the bottom limit for the y-axis")
++parser.add_argument("--output-format", type=str, default="pdf", help="either `pdf`, `png`, or `svg`")
++parser.add_argument("--seed", type=int, default=6, help="seed of color palette shuffle")
++args = parser.parse_args()
++api = wandb.Api()
++np.random.seed(args.seed)
++
++# hacks
++env_dict = {
++    "MicrortsAttackShapedReward-v1": "MicrortsAttackHRL-v1",
++    "MicrortsProduceCombatUnitsShapedReward-v1": "MicrortsProduceCombatUnitHRL-v1",
++    "MicrortsRandomEnemyShapedReward3-v1": "MicrortsRandomEnemyHRL3-v1",
++}
++exp_convert_dict = {
++    "ppo_positive_reward-positive_likelihood-0-": "sparse reward - no PLO",
++    "ppo": "sparse reward",
++    "ppo_ac_positive_reward-shift-2000000--adaptation-2000000--positive_likelihood-0-": "action guidance - multi-agent  w/ PLO",
++    "ppo_ac_positive_reward-shift-2000000--adaptation-7000000--positive_likelihood-0-": "action guidance - long adaptation w/ PLO",
++    "ppo_ac_positive_reward-shift-800000--adaptation-1000000--positive_likelihood-0-": "action guidance - short adaptation w/ PLO",
++    "ppo_ac_positive_reward-shift-2000000--adaptation-7000000--positive_likelihood-1-": "action guidance - long adaptation",
++    "ppo_ac_positive_reward-shift-800000--adaptation-1000000--positive_likelihood-1-": "action guidance - short adaptation",
++    "pposhaped": "shaped reward",
++}
++
++# args.feature_of_interest = 'charts/episodic_return'
++feature_name = args.feature_of_interest.replace("/", "_")
++if not os.path.exists(feature_name):
++    os.makedirs(feature_name)
++
++if not path.exists(f"{feature_name}/all_df_cache.pkl"):
++    # Change oreilly-class/cifar to <entity/project-name>
++    runs = api.runs(args.wandb_project)
++    summary_list = []
++    config_list = []
++    name_list = []
++    envs = {}
++    data = []
++    exp_names = []
++
++    for idx, run in enumerate(runs):
++        if args.feature_of_interest in run.summary:
++            # if args.scan_history:
++            #     ls =
++            # else:
++            ls = run.history(keys=[args.feature_of_interest, "global_step"], pandas=False, samples=args.samples)
++            metrics_dataframe = pd.DataFrame(ls[0])
++            exp_name = run.config["exp_name"]
++            for param in args.hyper_params_tuned:
++                if param in run.config:
++                    exp_name += "-" + param + "-" + str(run.config[param]) + "-"
++
++            # hacks
++            if run.config["env_id"] in env_dict:
++                exp_name += "shaped"
++                run.config["env_id"] = env_dict[run.config["env_id"]]
++
++            metrics_dataframe.insert(len(metrics_dataframe.columns), "algo", exp_name)
++            exp_names += [exp_name]
++            metrics_dataframe.insert(len(metrics_dataframe.columns), "seed", run.config["seed"])
++
++            data += [metrics_dataframe]
++            if run.config["env_id"] not in envs:
++                envs[run.config["env_id"]] = [metrics_dataframe]
++                envs[run.config["env_id"] + "total_timesteps"] = run.config["total_timesteps"]
++            else:
++                envs[run.config["env_id"]] += [metrics_dataframe]
++
++            # run.summary are the output key/values like accuracy.  We call ._json_dict to omit large files
++            summary_list.append(run.summary._json_dict)
++
++            # run.config is the input metrics.  We remove special values that start with _.
++            config_list.append({k: v for k, v in run.config.items() if not k.startswith("_")})
++
++            # run.name is the name of the run.
++            name_list.append(run.name)
++
++    summary_df = pd.DataFrame.from_records(summary_list)
++    config_df = pd.DataFrame.from_records(config_list)
++    name_df = pd.DataFrame({"name": name_list})
++    all_df = pd.concat([name_df, config_df, summary_df], axis=1)
++    data = pd.concat(data, ignore_index=True)
++
++    with open(f"{feature_name}/all_df_cache.pkl", "wb") as handle:
++        pickle.dump(all_df, handle, protocol=pickle.HIGHEST_PROTOCOL)
++    with open(f"{feature_name}/envs_cache.pkl", "wb") as handle:
++        pickle.dump(envs, handle, protocol=pickle.HIGHEST_PROTOCOL)
++    with open(f"{feature_name}/exp_names_cache.pkl", "wb") as handle:
++        pickle.dump(exp_names, handle, protocol=pickle.HIGHEST_PROTOCOL)
++else:
++    with open(f"{feature_name}/all_df_cache.pkl", "rb") as handle:
++        all_df = pickle.load(handle)
++    with open(f"{feature_name}/envs_cache.pkl", "rb") as handle:
++        envs = pickle.load(handle)
++    with open(f"{feature_name}/exp_names_cache.pkl", "rb") as handle:
++        exp_names = pickle.load(handle)
++print("data loaded")
++
++# https://stackoverflow.com/questions/42281844/what-is-the-mathematics-behind-the-smoothing-parameter-in-tensorboards-scalar#_=_
++def smooth(scalars, weight):  # Weight between 0 and 1
++    last = scalars[0]  # First value in the plot (first timestep)
++    smoothed = list()
++    for point in scalars:
++        smoothed_val = last * weight + (1 - weight) * point  # Calculate smoothed value
++        smoothed.append(smoothed_val)  # Save it
++        last = smoothed_val  # Anchor the last smoothed value
++
++    return smoothed
++
++
++# smoothing
++for env in envs:
++    if not env.endswith("total_timesteps"):
++        for idx, metrics_dataframe in enumerate(envs[env]):
++            envs[env][idx] = metrics_dataframe.dropna(subset=[args.feature_of_interest])
++#             envs[env][idx][args.feature_of_interest] = smooth(metrics_dataframe[args.feature_of_interest], 0.85)
++
++sns.set(style="darkgrid")
++
++
++def get_df_for_env(env_id):
++    env_total_timesteps = envs[env_id + "total_timesteps"]
++    env_increment = env_total_timesteps / 500
++    envs_same_x_axis = []
++    for sampled_run in envs[env_id]:
++        df = pd.DataFrame(columns=sampled_run.columns)
++        x_axis = [i * env_increment for i in range(500 - 2)]
++        current_row = 0
++        for timestep in x_axis:
++            while sampled_run.iloc[current_row]["global_step"] < timestep:
++                current_row += 1
++                if current_row > len(sampled_run) - 2:
++                    break
++            if current_row > len(sampled_run) - 2:
++                break
++            temp_row = sampled_run.iloc[current_row].copy()
++            temp_row["global_step"] = timestep
++            df = df.append(temp_row)
++
++        envs_same_x_axis += [df]
++    return pd.concat(envs_same_x_axis, ignore_index=True)
++
++
++def export_legend(ax, filename="legend.pdf"):
++    # import matplotlib as mpl
++    # mpl.rcParams['text.usetex'] = True
++    # mpl.rcParams['text.latex.preamble'] = [r'\usepackage{amsmath}'] #for \text command
++    fig2 = plt.figure()
++    ax2 = fig2.add_subplot()
++    ax2.axis("off")
++    handles, labels = ax.get_legend_handles_labels()
++
++    legend = ax2.legend(
++        handles=handles[1:], labels=labels[1:], frameon=False, loc="lower center", ncol=3, fontsize=20, handlelength=1
++    )
++    for text in legend.get_texts():
++        text.set_text(exp_convert_dict[text.get_text()])
++    for line in legend.get_lines():
++        line.set_linewidth(4.0)
++    fig = legend.figure
++    fig.canvas.draw()
++    bbox = legend.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
++    fig.savefig(filename, dpi="figure", bbox_inches=bbox)
++    fig.clf()
++
++
++if not os.path.exists(f"{feature_name}/data"):
++    os.makedirs(f"{feature_name}/data")
++if not os.path.exists(f"{feature_name}/plots"):
++    os.makedirs(f"{feature_name}/plots")
++if not os.path.exists(f"{feature_name}/legends"):
++    os.makedirs(f"{feature_name}/legends")
++
++
++interested_exp_names = sorted(list(set(exp_names)))  # ['ppo_continuous_action', 'ppo_atari_visual']
++current_palette = sns.color_palette(n_colors=len(interested_exp_names))
++np.random.shuffle(current_palette)
++current_palette_dict = dict(zip(interested_exp_names, current_palette))
++if args.interested_exp_names:
++    interested_exp_names = args.interested_exp_names
++print(current_palette_dict)
++legend_df = pd.DataFrame()
++
++if args.font_size:
++    plt.rc("axes", titlesize=args.font_size)  # fontsize of the axes title
++    plt.rc("axes", labelsize=args.font_size)  # fontsize of the x and y labels
++    plt.rc("xtick", labelsize=args.font_size)  # fontsize of the tick labels
++    plt.rc("ytick", labelsize=args.font_size)  # fontsize of the tick labels
++    plt.rc("legend", fontsize=args.font_size)  # legend fontsize
++
++stats = {item: [] for item in ["env_id", "exp_name", args.feature_of_interest]}
++# uncommenet the following to generate all figures
++for env in set(all_df["env_id"]):
++    if not path.exists(f"{feature_name}/data/{env}.pkl"):
++        with open(f"{feature_name}/data/{env}.pkl", "wb") as handle:
++            data = get_df_for_env(env)
++            data["seed"] = data["seed"].astype(float)
++            data[args.feature_of_interest] = data[args.feature_of_interest].astype(float)
++            pickle.dump(data, handle, protocol=pickle.HIGHEST_PROTOCOL)
++    else:
++        with open(f"{feature_name}/data/{env}.pkl", "rb") as handle:
++            data = pickle.load(handle)
++            print(f"{env}'s data loaded")
++
++    def _smooth(df):
++        df[args.feature_of_interest] = smooth(list(df[args.feature_of_interest]), args.smooth_weight)
++        return df
++
++    legend_df = legend_df.append(data)
++    ax = sns.lineplot(
++        data=data.groupby(["seed", "algo"]).apply(_smooth).loc[data["algo"].isin(interested_exp_names)],
++        x="global_step",
++        y=args.feature_of_interest,
++        hue="algo",
++        units="seed",
++        estimator=None,
++        palette=current_palette_dict,
++        alpha=0.2,
++    )
++    sns.lineplot(
++        data=data.groupby(["seed", "algo"]).apply(_smooth).loc[data["algo"].isin(interested_exp_names)],
++        x="global_step",
++        y=args.feature_of_interest,
++        hue="algo",
++        ci=None,
++        palette=current_palette_dict,
++        linewidth=2.0,
++    )
++    ax.set(xlabel=args.x_label, ylabel=args.y_label)
++
++    handles, labels = ax.get_legend_handles_labels()
++    legend = ax.legend(
++        handles=handles[1 : len(labels) // 2],
++        labels=labels[1 : len(labels) // 2],
++        loc="upper center",
++        bbox_to_anchor=(0.5, -0.20),
++        fancybox=True,
++    )
++    for text in legend.get_texts():
++        text.set_text(exp_convert_dict[text.get_text()])
++    if args.y_lim_bottom:
++        plt.ylim(bottom=args.y_lim_bottom)
++    # plt.title(env)
++    plt.tight_layout()
++    plt.savefig(f"{feature_name}/plots/{env}.{args.output_format}")
++    plt.clf()
++
++    for algo in interested_exp_names:
++        algo_data = data.loc[data["algo"].isin([algo])]
++        last_n_episodes_global_step = sorted(algo_data["global_step"].unique())[-args.last_n_episodes]
++        last_n_episodes_features = (
++            algo_data[algo_data["global_step"] > last_n_episodes_global_step]
++            .groupby(["seed"])
++            .mean()[args.feature_of_interest]
++        )
++
++        for item in last_n_episodes_features:
++            stats[args.feature_of_interest] += [item]
++            stats["exp_name"] += [exp_convert_dict[algo]]
++            stats["env_id"] += [env]
++
++# export legend
++ax = sns.lineplot(
++    data=legend_df,
++    x="global_step",
++    y=args.feature_of_interest,
++    hue="algo",
++    ci="sd",
++    palette=current_palette_dict,
++)
++ax.set(xlabel="Time Steps", ylabel="Average Episode Reward")
++ax.legend().remove()
++export_legend(ax, f"{feature_name}/legend.{args.output_format}")
++plt.clf()
++
++
++# analysis
++stats_df = pd.DataFrame(stats)
++g = stats_df.groupby(["env_id", "exp_name"]).agg(lambda x: f"{np.mean(x):.2f} ± {np.std(x):.2f}")
++print(g.reset_index().pivot("exp_name", "env_id", args.feature_of_interest).to_latex().replace("±", r"$\pm$"))
+diff --git a/DQN/cleanrl_utils/reproduce.py b/DQN/cleanrl_utils/reproduce.py
+new file mode 100644
+index 0000000..c9dd65d
+--- /dev/null
++++ b/DQN/cleanrl_utils/reproduce.py
+@@ -0,0 +1,54 @@
++import argparse
++from distutils.util import strtobool
++
++import requests
++
++if __name__ == "__main__":
++    parser = argparse.ArgumentParser(description="CleanRL Plots")
++    # Common arguments
++    parser.add_argument(
++        "--run",
++        type=str,
++        default="cleanrl/cleanrl.benchmark/runs/thq5rgnz",
++        help="the name of wandb project (e.g. cleanrl/cleanrl)",
++    )
++    parser.add_argument(
++        "--remove-entity",
++        type=lambda x: bool(strtobool(x)),
++        default=True,
++        nargs="?",
++        const=True,
++        help="if toggled, the wandb-entity will be removed",
++    )
++    args = parser.parse_args()
++    uri = args.run.replace("/runs", "")
++
++    requirements_txt_url = f"https://api.wandb.ai/files/{uri}/requirements.txt"
++    metadata_url = f"https://api.wandb.ai/files/{uri}/wandb-metadata.json"
++    metadata = requests.get(url=metadata_url).json()
++
++    if args.remove_entity:
++        a = []
++        wandb_entity_idx = None
++        for i in range(len(metadata["args"])):
++            if metadata["args"][i] == "--wandb-entity":
++                wandb_entity_idx = i
++                continue
++            if wandb_entity_idx and i == wandb_entity_idx + 1:
++                continue
++            a += [metadata["args"][i]]
++    else:
++        a = metadata["args"]
++
++    program = ["python"] + [metadata["program"]] + a
++
++    print(
++        f"""
++# run the following
++python3 -m venv venv
++source venv/bin/activate
++pip install -r {requirements_txt_url}
++curl -OL https://api.wandb.ai/files/{uri}/code/{metadata["codePath"]}
++{" ".join(program)}
++"""
++    )
+diff --git a/DQN/cleanrl_utils/resume.py b/DQN/cleanrl_utils/resume.py
+new file mode 100644
+index 0000000..a877ac9
+--- /dev/null
++++ b/DQN/cleanrl_utils/resume.py
+@@ -0,0 +1,110 @@
++# pip install boto3
++import argparse
++import re
++import time
++from distutils.util import strtobool
++
++import boto3
++import requests
++import wandb
++
++client = boto3.client("batch")
++
++parser = argparse.ArgumentParser(description="CleanRL Experiment Submission")
++# Common arguments
++parser.add_argument(
++    "--wandb-project", type=str, default="vwxyzjn/gym-microrts", help="the name of wandb project (e.g. cleanrl/cleanrl)"
++)
++parser.add_argument("--run-state", type=str, default="crashed", help="the name of this experiment")
++
++parser.add_argument("--job-queue", type=str, default="cleanrl", help="the name of the job queue")
++parser.add_argument(
++    "--wandb-key", type=str, default="", help="the wandb key. If not provided, the script will try to read from `~/.netrc`"
++)
++parser.add_argument("--docker-repo", type=str, default="vwxyzjn/gym-microrts:latest", help="the name of the job queue")
++parser.add_argument("--job-definition", type=str, default="gym-microrts", help="the name of the job definition")
++parser.add_argument("--num-seed", type=int, default=2, help="number of random seeds for experiments")
++parser.add_argument("--num-vcpu", type=int, default=1, help="number of vcpu per experiment")
++parser.add_argument("--num-memory", type=int, default=2000, help="number of memory (MB) per experiment")
++parser.add_argument("--num-gpu", type=int, default=0, help="number of gpu per experiment")
++parser.add_argument("--num-hours", type=float, default=16.0, help="number of hours allocated experiment")
++parser.add_argument(
++    "--upload-files-baseurl", type=str, default="", help="the baseurl of your website if you decide to upload files"
++)
++parser.add_argument(
++    "--submit-aws",
++    type=lambda x: bool(strtobool(x)),
++    default=False,
++    nargs="?",
++    const=True,
++    help="if toggled, script will need to be uploaded",
++)
++args = parser.parse_args()
++
++api = wandb.Api()
++
++# Project is specified by <entity/project-name>
++runs = api.runs(args.wandb_project)
++run_ids = []
++final_run_cmds = []
++for run in runs:
++    if run.state == args.run_state:
++        run_ids += [run.path[-1]]
++        metadata = requests.get(url=run.file(name="wandb-metadata.json").url).json()
++        final_run_cmds += [["python", metadata["program"]] + metadata["args"]]
++        if args.upload_files_baseurl:
++            file_name = final_run_cmds[-1][1]
++            link = args.upload_files_baseurl + "/" + file_name
++            final_run_cmds[-1] = ["curl", "-O", link, ";"] + final_run_cmds[-1]
++
++if not args.wandb_key:
++    args.wandb_key = requests.utils.get_netrc_auth("https://api.wandb.ai")[-1]
++assert (
++    len(args.wandb_key) > 0
++), "set the environment variable `WANDB_KEY` to your WANDB API key, something like `export WANDB_KEY=fdsfdsfdsfads` "
++
++# use docker directly
++if not args.submit_aws:
++    cores = 40
++    current_core = 0
++    for run_id, final_run_cmd in zip(run_ids, final_run_cmds):
++        print(
++            f'docker run -d --cpuset-cpus="{current_core}" -e WANDB={wandb_key} -e WANDB_RESUME=must -e WANDB_RUN_ID={run_id} {args.docker_repo} '
++            + '/bin/bash -c "'
++            + " ".join(final_run_cmd)
++            + '"'
++        )
++        current_core = (current_core + 1) % cores
++
++# submit jobs
++if args.submit_aws:
++    for run_id, final_run_cmd in zip(run_ids, final_run_cmds):
++        job_name = re.findall("(python)(.+)(.py)", " ".join(final_run_cmd))[0][1].strip() + str(int(time.time()))
++        job_name = job_name.replace("/", "_").replace("_param ", "")
++        resources_requirements = []
++        if args.num_gpu:
++            resources_requirements = [
++                {"value": str(args.num_gpu), "type": "GPU"},
++            ]
++
++        response = client.submit_job(
++            jobName=job_name,
++            jobQueue=args.job_queue,
++            jobDefinition=args.job_definition,
++            containerOverrides={
++                "vcpus": args.num_vcpu,
++                "memory": args.num_memory,
++                "command": ["/bin/bash", "-c", " ".join(final_run_cmd)],
++                "environment": [
++                    {"name": "WANDB", "value": wandb_key},
++                    {"name": "WANDB_RESUME", "value": "must"},
++                    {"name": "WANDB_RUN_ID", "value": run_id},
++                ],
++                "resourceRequirements": resources_requirements,
++            },
++            retryStrategy={"attempts": 1},
++            timeout={"attemptDurationSeconds": int(args.num_hours * 60 * 60)},
++        )
++        if response["ResponseMetadata"]["HTTPStatusCode"] != 200:
++            print(response)
++            raise Exception("jobs submit failure")
+diff --git a/DQN/cleanrl_utils/submit_exp.py b/DQN/cleanrl_utils/submit_exp.py
+new file mode 100644
+index 0000000..6f38447
+--- /dev/null
++++ b/DQN/cleanrl_utils/submit_exp.py
+@@ -0,0 +1,142 @@
++import argparse
++import multiprocessing
++import subprocess
++import time
++from distutils.util import strtobool
++
++import boto3
++import requests
++import wandb
++
++# fmt: off
++parser = argparse.ArgumentParser(description='CleanRL Experiment Submission')
++# experiment generation
++parser.add_argument('--exp-script', type=str, default="debug.sh",
++    help='the file name of this experiment')
++parser.add_argument('--command', type=str, default="poetry run python cleanrl/ppo.py",
++    help='the docker command')
++
++# CleanRL specific args
++parser.add_argument('--wandb-key', type=str, default="",
++    help='the wandb key. If not provided, the script will try to read from `netrc`')
++parser.add_argument('--num-seed', type=int, default=1,
++    help='number of random seeds for experiments')
++
++# experiment submission
++parser.add_argument('--job-queue', type=str, default="m6gd-medium",
++    help='the name of the job queue')
++parser.add_argument('--docker-tag', type=str, default="vwxyzjn/cleanrl:latest",
++    help='the name of the docker tag')
++parser.add_argument('--num-vcpu', type=int, default=1,
++    help='number of vcpu per experiment')
++parser.add_argument('--num-memory', type=int, default=2000,
++    help='number of memory (MB) per experiment')
++parser.add_argument('--num-gpu', type=int, default=0,
++    help='number of gpu per experiment')
++parser.add_argument('--num-hours', type=float, default=16.0,
++    help='number of hours allocated experiment')
++parser.add_argument('-b', '--build', type=lambda x:bool(strtobool(x)), default=False, nargs='?', const=True,
++    help='if toggled, the script will build a container')
++parser.add_argument('--archs', type=str, default="linux/amd64", # linux/arm64,linux/amd64
++    help='the archs to build the docker container for')
++parser.add_argument('-p', '--push', type=lambda x:bool(strtobool(x)), default=False, nargs='?', const=True,
++    help='if toggled, the script will push the built container')
++parser.add_argument('--provider', type=str, default="", choices=["aws"],
++    help='the cloud provider of choice (currently only `aws` is supported)')
++parser.add_argument('--aws-num-retries', type=int, default=1,
++    help='the number of job retries for `provider=="aws"`')
++args = parser.parse_args()
++# fmt: on
++
++if args.build:
++    output_type_str = "--output=type=registry" if args.push else "--output=type=docker"
++    subprocess.run(
++        f"docker buildx build {output_type_str} --platform {args.archs} -t {args.docker_tag} .",
++        shell=True,
++        check=True,
++    )
++
++if not args.wandb_key:
++    try:
++        args.wandb_key = requests.utils.get_netrc_auth("https://api.wandb.ai")[-1]
++    except:
++        pass
++assert len(args.wandb_key) > 0, "you have not logged into W&B; try do `wandb login`"
++
++# extract runs from bash scripts
++final_run_cmds = []
++for seed in range(1, 1 + args.num_seed):
++    final_run_cmds += [args.command + " --seed " + str(seed)]
++
++final_str = ""
++cores = multiprocessing.cpu_count()
++current_core = 0
++for final_run_cmd in final_run_cmds:
++    run_command = (
++        f'docker run -d --cpuset-cpus="{current_core}" -e WANDB_API_KEY={args.wandb_key} {args.docker_tag} '
++        + '/bin/bash -c "'
++        + final_run_cmd
++        + '"'
++        + "\n"
++    )
++    print(run_command)
++    final_str += run_command
++    current_core = (current_core + 1) % cores
++
++with open(f"{args.exp_script}.docker.sh", "w+") as f:
++    f.write(final_str)
++
++# submit jobs
++if args.provider == "aws":
++    client = boto3.client("batch")
++    for final_run_cmd in final_run_cmds:
++        job_name = args.docker_tag.replace(":", "").replace("/", "_").replace(" ", "").replace("-", "_") + str(
++            int(time.time())
++        )
++        resources_requirements = []
++        if args.num_gpu:
++            resources_requirements = [
++                {"value": str(args.num_gpu), "type": "GPU"},
++            ]
++        try:
++            job_def_name = args.docker_tag.replace(":", "_").replace("/", "_")
++            job_def = client.register_job_definition(
++                jobDefinitionName=job_def_name,
++                type="container",
++                containerProperties={
++                    "image": args.docker_tag,
++                    "vcpus": args.num_vcpu,
++                    "memory": args.num_memory,
++                    "command": [
++                        "/bin/bash",
++                    ],
++                },
++            )
++            response = client.submit_job(
++                jobName=job_name,
++                jobQueue=args.job_queue,
++                jobDefinition=job_def_name,
++                containerOverrides={
++                    "vcpus": args.num_vcpu,
++                    "memory": args.num_memory,
++                    "command": ["/bin/bash", "-c", final_run_cmd],
++                    "environment": [
++                        {"name": "WANDB_API_KEY", "value": args.wandb_key},
++                        {"name": "WANDB_RESUME", "value": "allow"},
++                        {"name": "WANDB_RUN_ID", "value": wandb.util.generate_id()},
++                    ],
++                    "resourceRequirements": resources_requirements,
++                },
++                retryStrategy={"attempts": args.aws_num_retries},
++                timeout={"attemptDurationSeconds": int(args.num_hours * 60 * 60)},
++            )
++            if response["ResponseMetadata"]["HTTPStatusCode"] != 200:
++                print(response)
++                raise Exception("jobs submit failure")
++        except Exception as e:
++            print(e)
++        finally:
++            response = client.deregister_job_definition(jobDefinition=job_def_name)
++            if response["ResponseMetadata"]["HTTPStatusCode"] != 200:
++                print(response)
++                raise Exception("jobs submit failure")
+diff --git a/DQN/cleanrl_utils/tuner.py b/DQN/cleanrl_utils/tuner.py
+new file mode 100644
+index 0000000..ed576e5
+--- /dev/null
++++ b/DQN/cleanrl_utils/tuner.py
+@@ -0,0 +1,146 @@
++import os
++import runpy
++import sys
++import time
++from typing import Callable, Dict, List, Optional
++
++import numpy as np
++import optuna
++import wandb
++from rich import print
++from tensorboard.backend.event_processing import event_accumulator
++
++
++class HiddenPrints:
++    def __enter__(self):
++        self._original_stdout = sys.stdout
++        sys.stdout = open(os.devnull, "w")
++
++    def __exit__(self, exc_type, exc_val, exc_tb):
++        sys.stdout.close()
++        sys.stdout = self._original_stdout
++
++
++class Tuner:
++    def __init__(
++        self,
++        script: str,
++        metric: str,
++        target_scores: Dict[str, Optional[List[float]]],
++        params_fn: Callable[[optuna.Trial], Dict],
++        direction: str = "maximize",
++        aggregation_type: str = "average",
++        metric_last_n_average_window: int = 50,
++        sampler: Optional[optuna.samplers.BaseSampler] = None,
++        pruner: Optional[optuna.pruners.BasePruner] = None,
++        storage: str = "sqlite:///cleanrl_hpopt.db",
++        study_name: str = "",
++        wandb_kwargs: Dict[str, any] = {},
++    ) -> None:
++        self.script = script
++        self.metric = metric
++        self.target_scores = target_scores
++        if len(self.target_scores) > 1:
++            if None in self.target_scores.values():
++                raise ValueError(
++                    "If there are multiple environments, the target scores must be specified for each environment."
++                )
++
++        self.params_fn = params_fn
++        self.direction = direction
++        self.aggregation_type = aggregation_type
++        if self.aggregation_type == "average":
++            self.aggregation_fn = np.average
++        elif self.aggregation_type == "median":
++            self.aggregation_fn = np.median
++        elif self.aggregation_type == "max":
++            self.aggregation_fn = np.max
++        elif self.aggregation_type == "min":
++            self.aggregation_fn = np.min
++        else:
++            raise ValueError(f"Unknown aggregation type {self.aggregation_type}")
++        self.metric_last_n_average_window = metric_last_n_average_window
++        self.pruner = pruner
++        self.sampler = sampler
++        self.storage = storage
++        self.study_name = study_name
++        if len(self.study_name) == 0:
++            self.study_name = f"tuner_{int(time.time())}"
++        self.wandb_kwargs = wandb_kwargs
++
++    def tune(self, num_trials: int, num_seeds: int) -> None:
++        def objective(trial: optuna.Trial):
++            params = self.params_fn(trial)
++            run = None
++            if len(self.wandb_kwargs.keys()) > 0:
++                run = wandb.init(
++                    **self.wandb_kwargs,
++                    config=params,
++                    name=f"{self.study_name}_{trial.number}",
++                    group=self.study_name,
++                    save_code=True,
++                    reinit=True,
++                )
++
++            algo_command = [f"--{key}={value}" for key, value in params.items()]
++            normalized_scoress = []
++            for seed in range(num_seeds):
++                normalized_scores = []
++                for env_id in self.target_scores.keys():
++                    sys.argv = algo_command + [f"--env-id={env_id}", f"--seed={seed}", "--track=False"]
++                    with HiddenPrints():
++                        experiment = runpy.run_path(path_name=self.script, run_name="__main__")
++
++                    # read metric from tensorboard
++                    ea = event_accumulator.EventAccumulator(f"runs/{experiment['run_name']}")
++                    ea.Reload()
++                    metric_values = [
++                        scalar_event.value for scalar_event in ea.Scalars(self.metric)[-self.metric_last_n_average_window :]
++                    ]
++                    print(
++                        f"The average episodic return on {env_id} is {np.average(metric_values)} averaged over the last {self.metric_last_n_average_window} episodes."
++                    )
++                    if self.target_scores[env_id] is not None:
++                        normalized_scores += [
++                            (np.average(metric_values) - self.target_scores[env_id][0])
++                            / (self.target_scores[env_id][1] - self.target_scores[env_id][0])
++                        ]
++                    else:
++                        normalized_scores += [np.average(metric_values)]
++                    if run:
++                        run.log({f"{env_id}_return": np.average(metric_values)})
++
++                normalized_scoress += [normalized_scores]
++                aggregated_normalized_score = self.aggregation_fn(normalized_scores)
++                print(f"The {self.aggregation_type} normalized score is {aggregated_normalized_score} with num_seeds={seed}")
++                trial.report(aggregated_normalized_score, step=seed)
++                if run:
++                    run.log({"aggregated_normalized_score": aggregated_normalized_score})
++                if trial.should_prune():
++                    if run:
++                        run.finish(quiet=True)
++                    raise optuna.TrialPruned()
++
++            if run:
++                run.finish(quiet=True)
++            return np.average(
++                self.aggregation_fn(normalized_scoress, axis=1)
++            )  # we alaways return the average of the aggregated normalized scores
++
++        study = optuna.create_study(
++            study_name=self.study_name,
++            direction=self.direction,
++            storage=self.storage,
++            pruner=self.pruner,
++            sampler=self.sampler,
++        )
++        print("==========================================================================================")
++        print("run another tuner with the following command:")
++        print(f"python -m cleanrl_utils.tuner --study-name {self.study_name}")
++        print("==========================================================================================")
++        study.optimize(
++            objective,
++            n_trials=num_trials,
++        )
++        print(f"The best trial obtains a normalized score of {study.best_trial.value}", study.best_trial.params)
++        return study.best_trial
+diff --git a/DQN/wandb/debug-cli.sungmin.log b/DQN/wandb/debug-cli.sungmin.log
+new file mode 100644
+index 0000000..e69de29
+diff --git a/README.md b/README.md
+index eb1d04d..f13c059 100644
+--- a/README.md
++++ b/README.md
+@@ -1,92 +1,5 @@
+ # AtariRL
+-
+-
+-
+-## Getting started
+-
+-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+-
+-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+-
+-## Add your files
+-
+-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
+-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+-
+-```
+-cd existing_repo
+-git remote add origin https://git.cs.vt.edu/sungmin/atarirl.git
+-git branch -M main
+-git push -uf origin main
+-```
+-
+-## Integrate with your tools
+-
+-- [ ] [Set up project integrations](https://git.cs.vt.edu/sungmin/atarirl/-/settings/integrations)
+-
+-## Collaborate with your team
+-
+-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
+-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
+-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
+-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
+-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+-
+-## Test and Deploy
+-
+-Use the built-in continuous integration in GitLab.
+-
+-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
+-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
+-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
+-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
+-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+-
+-***
+-
+-# Editing this README
+-
+-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
+-
+-## Suggestions for a good README
+-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+-
+-## Name
+-Choose a self-explaining name for your project.
+-
+-## Description
+-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+-
+-## Badges
+-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+-
+-## Visuals
+-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+-
+-## Installation
+-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+-
+-## Usage
+-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+-
+-## Support
+-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+-
+-## Roadmap
+-If you have ideas for releases in the future, it is a good idea to list them in the README.
+-
+-## Contributing
+-State if you are open to contributions and what your requirements are for accepting them.
+-
+-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+-
+-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+-
+-## Authors and acknowledgment
+-Show your appreciation to those who have contributed to the project.
+-
+-## License
+-For open source projects, say how it is licensed.
+-
+-## Project status
+-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
++First off, make sure the Python interpreter you are using is < 3.10, preferably version 3.9
++To get needed dependencies, do: pip install gym torch wandb huggingface_hub.
++To run on Windows, do: python3 .\AtariDQN.py --save-model True --track True --capture-video True 
++To track the model, you will need to create a Wandb account, and use the token in order to log performance for tracking. 

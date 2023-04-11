@@ -1,0 +1,12 @@
+model saved to runs/ALE/Assault-v5__AtariDQN__1__1681147541/AtariDQN.cleanrl_model
+
+eval_episode=0, episodic_return=3490.0
+eval_episode=1, episodic_return=3239.0
+eval_episode=2, episodic_return=3096.0
+eval_episode=3, episodic_return=2212.0
+eval_episode=4, episodic_return=6236.0
+eval_episode=5, episodic_return=2446.0
+eval_episode=6, episodic_return=1765.0
+eval_episode=7, episodic_return=1035.0
+eval_episode=8, episodic_return=1715.0
+eval_episode=9, episodic_return=928.0
