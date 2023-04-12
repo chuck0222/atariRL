@@ -1,0 +1,59 @@
+{
+    "os": "Windows-10-10.0.19044-SP0",
+    "python": "3.10.11",
+    "heartbeatAt": "2023-04-11T23:22:30.335291",
+    "startedAt": "2023-04-11T23:22:29.765533",
+    "docker": null,
+    "cuda": null,
+    "args": [
+        "--env-id",
+        "ALE/JourneyEscape-v5",
+        "--save-model",
+        "True",
+        "--track",
+        "True",
+        "--capture-video",
+        "True"
+    ],
+    "state": "running",
+    "program": "C:\\Users\\stick\\Documents\\Virginia_Tech\\4th_Year_Spring_Semester\\ML-Capstone\\Code\\atarirl\\DQN\\AtariDQN.py",
+    "codePath": "DQN\\AtariDQN.py",
+    "git": {
+        "remote": "https://git.cs.vt.edu/sungmin/atarirl.git",
+        "commit": "43167e8a333b659380a1c32492ea17fa697bbb22"
+    },
+    "email": "sungmin@vt.edu",
+    "root": "C:/Users/stick/Documents/Virginia_Tech/4th_Year_Spring_Semester/ML-Capstone/Code/atarirl",
+    "host": "DESKTOP-4GJPGMF",
+    "username": "sungmin",
+    "executable": "C:\\Users\\stick\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\\python.exe",
+    "cpu_count": 8,
+    "cpu_count_logical": 16,
+    "cpu_freq": {
+        "current": 2208.0,
+        "min": 0.0,
+        "max": 2208.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 2208.0,
+            "min": 0.0,
+            "max": 2208.0
+        }
+    ],
+    "disk": {
+        "total": 934.3935508728027,
+        "used": 859.5041007995605
+    },
+    "gpu": "NVIDIA GeForce RTX 3070 Laptop GPU",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA GeForce RTX 3070 Laptop GPU",
+            "memory_total": 8589934592
+        }
+    ],
+    "memory": {
+        "total": 15.767879486083984
+    }
+}

@@ -1,0 +1,101 @@
+wandb_version: 1
+
+exp_name:
+  desc: null
+  value: AtariDQN
+seed:
+  desc: null
+  value: 1
+torch_deterministic:
+  desc: null
+  value: true
+cuda:
+  desc: null
+  value: true
+track:
+  desc: null
+  value: true
+wandb_project_name:
+  desc: null
+  value: cleanRL
+wandb_entity:
+  desc: null
+  value: null
+capture_video:
+  desc: null
+  value: true
+save_model:
+  desc: null
+  value: true
+upload_model:
+  desc: null
+  value: false
+hf_entity:
+  desc: null
+  value: ''
+env_id:
+  desc: null
+  value: ALE/JourneyEscape-v5
+total_timesteps:
+  desc: null
+  value: 500000
+learning_rate:
+  desc: null
+  value: 0.0001
+buffer_size:
+  desc: null
+  value: 1000000
+gamma:
+  desc: null
+  value: 0.99
+tau:
+  desc: null
+  value: 1.0
+target_network_frequency:
+  desc: null
+  value: 1000
+batch_size:
+  desc: null
+  value: 32
+start_e:
+  desc: null
+  value: 1
+end_e:
+  desc: null
+  value: 0.01
+exploration_fraction:
+  desc: null
+  value: 0.1
+learning_starts:
+  desc: null
+  value: 80000
+train_frequency:
+  desc: null
+  value: 4
+_wandb:
+  desc: null
+  value:
+    code_path: code/DQN/AtariDQN.py
+    python_version: 3.10.11
+    cli_version: 0.14.2
+    framework: torch
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    start_time: 1681255349.785974
+    t:
+      1:
+      - 1
+      - 55
+      2:
+      - 1
+      - 55
+      3:
+      - 13
+      - 16
+      - 23
+      - 35
+      4: 3.10.11
+      5: 0.14.2
+      8:
+      - 3
+      - 5
