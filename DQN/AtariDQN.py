@@ -49,6 +49,8 @@ def parse_args():
         help="whether to upload the saved model to huggingface")
     parser.add_argument("--hf-entity", type=str, default="",
         help="the user or org name of the model repository from the Hugging Face Hub")
+    parser.add_argument("--load", type=str, default="",
+        help="Loads model given input value")
 
     # Algorithm specific arguments
     parser.add_argument("--env-id", type=str, default="ALE/Assault-v5",
@@ -180,7 +182,7 @@ if __name__ == "__main__":
         envs.single_action_space,
         device,
         optimize_memory_usage=True,
-        handle_timeout_termination=False,
+        handle_timeout_termination=True,
     )
     start_time = time.time()
 
@@ -258,6 +260,10 @@ if __name__ == "__main__":
         torch.save(q_network.state_dict(), model_path)
         print(f"model saved to {model_path}")
         from cleanrl_utils.evals.dqn_eval import evaluate
+
+        if args.load != "":
+            model_path = args.load
+            print(model_path)
 
         # Gets model from saved directory, and runs episodes on it
         episodic_returns = evaluate(
