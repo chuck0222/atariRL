@@ -1,3 +1,5 @@
+# Part by Sungmin
+
 # docs and experiment results can be found at https://docs.cleanrl.dev/rl-algorithms/dqn/#dqn_ataripy
 import argparse
 import os
@@ -47,6 +49,8 @@ def parse_args():
         help="whether to upload the saved model to huggingface")
     parser.add_argument("--hf-entity", type=str, default="",
         help="the user or org name of the model repository from the Hugging Face Hub")
+    parser.add_argument("--load", type=str, default="",
+        help="Loads model given input value")
 
     # Algorithm specific arguments
     parser.add_argument("--env-id", type=str, default="ALE/Assault-v5",
@@ -79,23 +83,23 @@ def parse_args():
     # fmt: on
     return args
 
-
+# Function that creates environment given arguments
 def make_env(env_id, seed, idx, capture_video, run_name):
     def thunk():
         env = gym.make(env_id)
         env = gym.wrappers.RecordEpisodeStatistics(env)
-        if capture_video:
+        if capture_video: # Creates video folder if option is true
             if idx == 0:
                 env = gym.wrappers.RecordVideo(env, f"videos/{run_name}")
-        env = NoopResetEnv(env, noop_max=30)
-        env = MaxAndSkipEnv(env, skip=4)
-        env = EpisodicLifeEnv(env)
-        if "FIRE" in env.unwrapped.get_action_meanings():
-            env = FireResetEnv(env)
+            env = NoopResetEnv(env, noop_max=30)
+            env = MaxAndSkipEnv(env, skip=4)
+            env = EpisodicLifeEnv(env)
+            if "FIRE" in env.unwrapped.get_action_meanings():
+                env = FireResetEnv(env)
         env = ClipRewardEnv(env)
-        env = gym.wrappers.ResizeObservation(env, (84, 84))
+        env = gym.wrappers.ResizeObservation(env, (84, 84)) # Resizes
         env = gym.wrappers.GrayScaleObservation(env)
-        env = gym.wrappers.FrameStack(env, 4)
+        env = gym.wrappers.FrameStack(env, 4) # Creates four different environments to capture motion better
         env.seed(seed)
         env.action_space.seed(seed)
         env.observation_space.seed(seed)
@@ -108,7 +112,7 @@ def make_env(env_id, seed, idx, capture_video, run_name):
 class QNetwork(nn.Module):
     def __init__(self, env):
         super().__init__()
-        self.network = nn.Sequential(
+        self.network = nn.Sequential( # Creates neural network
             nn.Conv2d(4, 32, 8, stride=4),
             nn.ReLU(),
             nn.Conv2d(32, 64, 4, stride=2),
@@ -121,7 +125,7 @@ class QNetwork(nn.Module):
             nn.Linear(512, env.single_action_space.n),
         )
 
-    def forward(self, x):
+    def forward(self, x): # Gets output of neural network after dividing x by 255, because it is image data
         return self.network(x / 255.0)
 
 # Function that accounts for epsilon decay
@@ -129,13 +133,13 @@ def linear_schedule(start_e: float, end_e: float, duration: int, t: int):
     slope = (end_e - start_e) / duration
     return max(slope * t + start_e, end_e)
 
-
+# Main function
 if __name__ == "__main__":
     args = parse_args()
     run_name = f"{args.env_id}__{args.exp_name}__{args.seed}__{int(time.time())}"
     if args.track:
         import wandb
-
+        # Initializes wandb if track is true
         wandb.init( # Initializes wandb
             project=args.wandb_project_name,
             entity=args.wandb_entity,
@@ -159,33 +163,37 @@ if __name__ == "__main__":
 
     device = torch.device("cuda" if torch.cuda.is_available() and args.cuda else "cpu")
 
-    # env setup
+    # SynVectorEnv creates vectorized environment that runs multiple verson of the env
     envs = gym.vector.SyncVectorEnv([make_env(args.env_id, args.seed, 0, args.capture_video, run_name)])
     assert isinstance(envs.single_action_space, gym.spaces.Discrete), "only discrete action space is supported"
 
+    # Creates neural network
     q_network = QNetwork(envs).to(device)
+    # Creates Adam optimizer that updates weights of NN
     optimizer = optim.Adam(q_network.parameters(), lr=args.learning_rate)
+    # Creates target NN that copies weights of q_network
     target_network = QNetwork(envs).to(device)
     target_network.load_state_dict(q_network.state_dict())
 
+    # Object that stores and samples transitions during training
     rb = ReplayBuffer(
         args.buffer_size,
         envs.single_observation_space,
         envs.single_action_space,
         device,
         optimize_memory_usage=True,
-        handle_timeout_termination=False,
+        handle_timeout_termination=True,
     )
     start_time = time.time()
 
     # TRY NOT TO MODIFY: start the game
     obs = envs.reset()
     for global_step in range(args.total_timesteps):
-        # ALGO LOGIC: put action logic here
+        # Epsilon policy, checks if random number is less than epsilon
         epsilon = linear_schedule(args.start_e, args.end_e, args.exploration_fraction * args.total_timesteps, global_step)
-        if random.random() < epsilon:
+        if random.random() < epsilon: # If so, will do random action
             actions = np.array([envs.single_action_space.sample() for _ in range(envs.num_envs)])
-        else:
+        else: # Otherwise, will get action from NN
             q_values = q_network(torch.Tensor(obs).to(device))
             actions = torch.argmax(q_values, dim=1).cpu().numpy()
 
@@ -206,21 +214,25 @@ if __name__ == "__main__":
         for idx, d in enumerate(dones):
             if d:
                 if 'terminal_observation' in infos[idx]:
-                    print("Yes it worked")
                     real_next_obs[idx] = infos[idx]['terminal_observation']
         rb.add(obs, real_next_obs, actions, rewards, dones, infos)
 
         # TRY NOT TO MODIFY: CRUCIAL step easy to overlook
         obs = next_obs
 
-        # ALGO LOGIC: training.
+        # Makes sure global_step is greater than learning starts
         if global_step > args.learning_starts:
+            # Hyperparameter for how often the model should be updated
             if global_step % args.train_frequency == 0:
+                # Gets sample from ReplayBuffer
                 data = rb.sample(args.batch_size)
                 with torch.no_grad():
+                    # Gets optimal Q values with given observations
                     target_max, _ = target_network(data.next_observations).max(dim=1)
+                    # Calculates target Q value
                     td_target = data.rewards.flatten() + args.gamma * target_max * (1 - data.dones.flatten())
                 old_val = q_network(data.observations).gather(1, data.actions).squeeze()
+                # Gets MSE loss between target and current Q values
                 loss = F.mse_loss(td_target, old_val)
 
                 if global_step % 100 == 0:
@@ -234,19 +246,26 @@ if __name__ == "__main__":
                 loss.backward()
                 optimizer.step()
 
-            # update target network
+            # Updates target network when frequency is 0
             if global_step % args.target_network_frequency == 0:
+                # Compares parameters of main and target networks, and target network copies their average
                 for target_network_param, q_network_param in zip(target_network.parameters(), q_network.parameters()):
                     target_network_param.data.copy_(
                         args.tau * q_network_param.data + (1.0 - args.tau) * target_network_param.data
                     )
 
+    # If save model parameter is true
     if args.save_model:
         model_path = f"runs/{run_name}/{args.exp_name}.cleanrl_model"
         torch.save(q_network.state_dict(), model_path)
         print(f"model saved to {model_path}")
         from cleanrl_utils.evals.dqn_eval import evaluate
 
+        if args.load != "":
+            model_path = args.load
+            print(model_path)
+
+        # Gets model from saved directory, and runs episodes on it
         episodic_returns = evaluate(
             model_path,
             make_env,

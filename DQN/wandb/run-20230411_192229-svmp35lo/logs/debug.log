@@ -1,0 +1,27 @@
+2023-04-11 19:22:29,768 INFO    MainThread:18568 [wandb_setup.py:_flush():76] Configure stats pid to 18568
+2023-04-11 19:22:29,768 INFO    MainThread:18568 [wandb_setup.py:_flush():76] Loading settings from C:\Users\stick\.config\wandb\settings
+2023-04-11 19:22:29,769 INFO    MainThread:18568 [wandb_setup.py:_flush():76] Loading settings from C:\Users\stick\Documents\Virginia_Tech\4th_Year_Spring_Semester\ML-Capstone\Code\atarirl\DQN\wandb\settings
+2023-04-11 19:22:29,769 INFO    MainThread:18568 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2023-04-11 19:22:29,769 INFO    MainThread:18568 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2023-04-11 19:22:29,769 INFO    MainThread:18568 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'DQN\\AtariDQN.py', 'program': 'C:\\Users\\stick\\Documents\\Virginia_Tech\\4th_Year_Spring_Semester\\ML-Capstone\\Code\\atarirl\\DQN\\AtariDQN.py'}
+2023-04-11 19:22:29,769 INFO    MainThread:18568 [wandb_init.py:_log_setup():507] Logging user logs to C:\Users\stick\Documents\Virginia_Tech\4th_Year_Spring_Semester\ML-Capstone\Code\atarirl\DQN\wandb\run-20230411_192229-svmp35lo\logs\debug.log
+2023-04-11 19:22:29,769 INFO    MainThread:18568 [wandb_init.py:_log_setup():508] Logging internal logs to C:\Users\stick\Documents\Virginia_Tech\4th_Year_Spring_Semester\ML-Capstone\Code\atarirl\DQN\wandb\run-20230411_192229-svmp35lo\logs\debug-internal.log
+2023-04-11 19:22:29,769 INFO    MainThread:18568 [wandb_init.py:init():547] calling init triggers
+2023-04-11 19:22:29,769 INFO    MainThread:18568 [wandb_init.py:init():554] wandb.init called with sweep_config: {}
+config: {'exp_name': 'AtariDQN', 'seed': 1, 'torch_deterministic': True, 'cuda': True, 'track': True, 'wandb_project_name': 'cleanRL', 'wandb_entity': None, 'capture_video': True, 'save_model': True, 'upload_model': False, 'hf_entity': '', 'env_id': 'ALE/JourneyEscape-v5', 'total_timesteps': 500000, 'learning_rate': 0.0001, 'buffer_size': 1000000, 'gamma': 0.99, 'tau': 1.0, 'target_network_frequency': 1000, 'batch_size': 32, 'start_e': 1, 'end_e': 0.01, 'exploration_fraction': 0.1, 'learning_starts': 80000, 'train_frequency': 4}
+2023-04-11 19:22:29,769 INFO    MainThread:18568 [wandb_init.py:init():595] starting backend
+2023-04-11 19:22:29,769 INFO    MainThread:18568 [wandb_init.py:init():599] setting up manager
+2023-04-11 19:22:29,771 INFO    MainThread:18568 [backend.py:_multiprocessing_setup():106] multiprocessing start_methods=spawn, using: spawn
+2023-04-11 19:22:29,785 INFO    MainThread:18568 [wandb_init.py:init():605] backend started and connected
+2023-04-11 19:22:29,786 INFO    MainThread:18568 [wandb_init.py:init():695] updated telemetry
+2023-04-11 19:22:29,839 INFO    MainThread:18568 [wandb_init.py:init():732] communicating run to backend with 60.0 second timeout
+2023-04-11 19:22:30,175 INFO    MainThread:18568 [wandb_run.py:_on_init():2176] communicating current version
+2023-04-11 19:22:30,255 INFO    MainThread:18568 [wandb_run.py:_on_init():2185] got version response 
+2023-04-11 19:22:30,255 INFO    MainThread:18568 [wandb_init.py:init():782] starting run threads in backend
+2023-04-11 19:22:30,743 INFO    MainThread:18568 [wandb_run.py:_console_start():2157] atexit reg
+2023-04-11 19:22:30,743 INFO    MainThread:18568 [wandb_run.py:_redirect():2012] redirect: SettingsConsole.WRAP_RAW
+2023-04-11 19:22:30,743 INFO    MainThread:18568 [wandb_run.py:_redirect():2077] Wrapping output streams.
+2023-04-11 19:22:30,743 INFO    MainThread:18568 [wandb_run.py:_redirect():2102] Redirects installed.
+2023-04-11 19:22:30,744 INFO    MainThread:18568 [wandb_init.py:init():824] run started, returning control to user process
+2023-04-11 19:22:30,745 INFO    MainThread:18568 [wandb_run.py:_tensorboard_callback():1432] tensorboard callback: runs/ALE/JourneyEscape-v5__AtariDQN__1__1681255342, True
+2023-04-11 22:08:07,938 WARNING MsgRouterThr:18568 [router.py:message_loop():77] message_loop has been closed

@@ -1,0 +1,176 @@
+diff --git a/DQN/AtariDQN.py b/DQN/AtariDQN.py
+index 1e8fadb..15b40d4 100644
+--- a/DQN/AtariDQN.py
++++ b/DQN/AtariDQN.py
+@@ -79,23 +79,23 @@ def parse_args():
+     # fmt: on
+     return args
+ 
+-
++# Function that creates environment given arguments
+ def make_env(env_id, seed, idx, capture_video, run_name):
+     def thunk():
+         env = gym.make(env_id)
+         env = gym.wrappers.RecordEpisodeStatistics(env)
+-        if capture_video:
++        if capture_video: # Creates video folder if option is true
+             if idx == 0:
+                 env = gym.wrappers.RecordVideo(env, f"videos/{run_name}")
+-        env = NoopResetEnv(env, noop_max=30)
+-        env = MaxAndSkipEnv(env, skip=4)
+-        env = EpisodicLifeEnv(env)
+-        if "FIRE" in env.unwrapped.get_action_meanings():
+-            env = FireResetEnv(env)
++            env = NoopResetEnv(env, noop_max=30)
++            env = MaxAndSkipEnv(env, skip=4)
++            env = EpisodicLifeEnv(env)
++            if "FIRE" in env.unwrapped.get_action_meanings():
++                env = FireResetEnv(env)
+         env = ClipRewardEnv(env)
+-        env = gym.wrappers.ResizeObservation(env, (84, 84))
++        env = gym.wrappers.ResizeObservation(env, (84, 84)) # Resizes
+         env = gym.wrappers.GrayScaleObservation(env)
+-        env = gym.wrappers.FrameStack(env, 4)
++        env = gym.wrappers.FrameStack(env, 4) # Creates four different environments to capture motion better
+         env.seed(seed)
+         env.action_space.seed(seed)
+         env.observation_space.seed(seed)
+@@ -108,7 +108,7 @@ def make_env(env_id, seed, idx, capture_video, run_name):
+ class QNetwork(nn.Module):
+     def __init__(self, env):
+         super().__init__()
+-        self.network = nn.Sequential(
++        self.network = nn.Sequential( # Creates neural network
+             nn.Conv2d(4, 32, 8, stride=4),
+             nn.ReLU(),
+             nn.Conv2d(32, 64, 4, stride=2),
+@@ -121,7 +121,7 @@ class QNetwork(nn.Module):
+             nn.Linear(512, env.single_action_space.n),
+         )
+ 
+-    def forward(self, x):
++    def forward(self, x): # Gets output of neural network after dividing x by 255, because it is image data
+         return self.network(x / 255.0)
+ 
+ # Function that accounts for epsilon decay
+@@ -129,13 +129,13 @@ def linear_schedule(start_e: float, end_e: float, duration: int, t: int):
+     slope = (end_e - start_e) / duration
+     return max(slope * t + start_e, end_e)
+ 
+-
++# Main function
+ if __name__ == "__main__":
+     args = parse_args()
+     run_name = f"{args.env_id}__{args.exp_name}__{args.seed}__{int(time.time())}"
+     if args.track:
+         import wandb
+-
++        # Initializes wandb if track is true
+         wandb.init( # Initializes wandb
+             project=args.wandb_project_name,
+             entity=args.wandb_entity,
+@@ -159,15 +159,19 @@ if __name__ == "__main__":
+ 
+     device = torch.device("cuda" if torch.cuda.is_available() and args.cuda else "cpu")
+ 
+-    # env setup
++    # SynVectorEnv creates vectorized environment that runs multiple verson of the env
+     envs = gym.vector.SyncVectorEnv([make_env(args.env_id, args.seed, 0, args.capture_video, run_name)])
+     assert isinstance(envs.single_action_space, gym.spaces.Discrete), "only discrete action space is supported"
+ 
++    # Creates neural network
+     q_network = QNetwork(envs).to(device)
++    # Creates Adam optimizer that updates weights of NN
+     optimizer = optim.Adam(q_network.parameters(), lr=args.learning_rate)
++    # Creates target NN that copies weights of q_network
+     target_network = QNetwork(envs).to(device)
+     target_network.load_state_dict(q_network.state_dict())
+ 
++    # Object that stores and samples transitions during training
+     rb = ReplayBuffer(
+         args.buffer_size,
+         envs.single_observation_space,
+@@ -181,11 +185,11 @@ if __name__ == "__main__":
+     # TRY NOT TO MODIFY: start the game
+     obs = envs.reset()
+     for global_step in range(args.total_timesteps):
+-        # ALGO LOGIC: put action logic here
++        # Epsilon policy, checks if random number is less than epsilon
+         epsilon = linear_schedule(args.start_e, args.end_e, args.exploration_fraction * args.total_timesteps, global_step)
+-        if random.random() < epsilon:
++        if random.random() < epsilon: # If so, will do random action
+             actions = np.array([envs.single_action_space.sample() for _ in range(envs.num_envs)])
+-        else:
++        else: # Otherwise, will get action from NN
+             q_values = q_network(torch.Tensor(obs).to(device))
+             actions = torch.argmax(q_values, dim=1).cpu().numpy()
+ 
+@@ -206,16 +210,17 @@ if __name__ == "__main__":
+         for idx, d in enumerate(dones):
+             if d:
+                 if 'terminal_observation' in infos[idx]:
+-                    print("Yes it worked")
+                     real_next_obs[idx] = infos[idx]['terminal_observation']
+         rb.add(obs, real_next_obs, actions, rewards, dones, infos)
+ 
+         # TRY NOT TO MODIFY: CRUCIAL step easy to overlook
+         obs = next_obs
+ 
+-        # ALGO LOGIC: training.
++        # Makes sure global_step is greater than learning starts
+         if global_step > args.learning_starts:
++            # Hyperparameter for how often the model should be updated
+             if global_step % args.train_frequency == 0:
++                # Gets sample from ReplayBuffer
+                 data = rb.sample(args.batch_size)
+                 with torch.no_grad():
+                     target_max, _ = target_network(data.next_observations).max(dim=1)
+@@ -234,19 +239,22 @@ if __name__ == "__main__":
+                 loss.backward()
+                 optimizer.step()
+ 
+-            # update target network
++            # Updates target network when frequency is 0
+             if global_step % args.target_network_frequency == 0:
++                # Compares parameters of main and target networks, and target network copies their average
+                 for target_network_param, q_network_param in zip(target_network.parameters(), q_network.parameters()):
+                     target_network_param.data.copy_(
+                         args.tau * q_network_param.data + (1.0 - args.tau) * target_network_param.data
+                     )
+ 
++    # If save model parameter is true
+     if args.save_model:
+         model_path = f"runs/{run_name}/{args.exp_name}.cleanrl_model"
+         torch.save(q_network.state_dict(), model_path)
+         print(f"model saved to {model_path}")
+         from cleanrl_utils.evals.dqn_eval import evaluate
+ 
++        # Gets model from saved directory, and runs episodes on it
+         episodic_returns = evaluate(
+             model_path,
+             make_env,
+diff --git a/README.md b/README.md
+index fe7d36d..aa354b5 100644
+--- a/README.md
++++ b/README.md
+@@ -1,7 +1,18 @@
+ # AtariRL
+-*Code adapted from CleanRL library*
+ 
+ First off, make sure the Python interpreter you are using is < 3.10, preferably version 3.9
+ To get needed dependencies, do: pip install gym torch wandb huggingface_hub.
+ To run on Windows, do: python3 .\AtariDQN.py --save-model True --track True --capture-video True
+ To track the model, you will need to create a Wandb account, and use the token in order to log performance for tracking. 
++
++CleanRL citation:
++@article{huang2022cleanrl,
++  author  = {Shengyi Huang and Rousslan Fernand Julien Dossa and Chang Ye and Jeff Braga and Dipam Chakraborty and Kinal Mehta and João G.M. Araújo},
++  title   = {CleanRL: High-quality Single-file Implementations of Deep Reinforcement Learning Algorithms},
++  journal = {Journal of Machine Learning Research},
++  year    = {2022},
++  volume  = {23},
++  number  = {274},
++  pages   = {1--18},
++  url     = {http://jmlr.org/papers/v23/21-1342.html}
++}
+\ No newline at end of file
