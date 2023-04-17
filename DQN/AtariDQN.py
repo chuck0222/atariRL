@@ -107,6 +107,23 @@ def make_env(env_id, seed, idx, capture_video, run_name):
 
     return thunk
 
+# Function that creates environment given arguments
+def make_env_render(env_id, seed, idx, capture_video, run_name):
+    def thunk():
+        env = gym.make(env_id, render_mode='human')
+        env = gym.wrappers.RecordEpisodeStatistics(env)
+
+        env = ClipRewardEnv(env)
+        env = gym.wrappers.ResizeObservation(env, (84, 84)) # Resizes
+        env = gym.wrappers.GrayScaleObservation(env)
+        env = gym.wrappers.FrameStack(env, 4) # Creates four different environments to capture motion better
+        env.seed(seed)
+        env.action_space.seed(seed)
+        env.observation_space.seed(seed)
+        return env
+
+    return thunk
+
 
 # ALGO LOGIC: initialize agent here:
 class QNetwork(nn.Module):
@@ -136,6 +153,7 @@ def linear_schedule(start_e: float, end_e: float, duration: int, t: int):
 # Main function
 if __name__ == "__main__":
     args = parse_args()
+    
     run_name = f"{args.env_id}__{args.exp_name}__{args.seed}__{int(time.time())}"
     if args.track:
         import wandb
@@ -261,10 +279,6 @@ if __name__ == "__main__":
         print(f"model saved to {model_path}")
         from cleanrl_utils.evals.dqn_eval import evaluate
 
-        if args.load != "":
-            model_path = args.load
-            print(model_path)
-
         # Gets model from saved directory, and runs episodes on it
         episodic_returns = evaluate(
             model_path,
@@ -285,6 +299,26 @@ if __name__ == "__main__":
             repo_name = f"{args.env_id}-{args.exp_name}-seed{args.seed}"
             repo_id = f"{args.hf_entity}/{repo_name}" if args.hf_entity else repo_name
             push_to_hub(args, episodic_returns, repo_id, "DQN", f"runs/{run_name}", f"videos/{run_name}-eval")
+
+    # Checks whether or not this run is loading a model
+    if args.load != "":
+        model_path = args.load
+        print(model_path)
+
+        from cleanrl_utils.evals.dqn_eval import evaluate
+
+        episodic_returns = evaluate(
+            model_path,
+            make_env_render,
+            args.env_id,
+            eval_episodes=10,
+            run_name=f"{run_name}-eval",
+            Model=QNetwork,
+            device=device,
+            epsilon=0.05,
+        )
+        for idx, episodic_return in enumerate(episodic_returns):
+            writer.add_scalar("eval/episodic_return", episodic_return, idx)
 
     envs.close()
     writer.close()

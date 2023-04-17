@@ -1,9 +1,14 @@
 # AtariRL
+For dependencies, do: pip install -r requirements.txt while in the DQN folder.
+To run the AtariDQN.py file, go into the DQN folder and run: python3 AtariDQN.py
 
-First off, make sure the Python interpreter you are using is < 3.10, preferably version 3.9
-To get needed dependencies, do: pip install gym torch wandb huggingface_hub.
-To run on Windows, do: python3 .\AtariDQN.py --save-model True --track True --capture-video True
-To track the model, you will need to create a Wandb account, and use the token in order to log performance for tracking. 
+Arguments to add for specific needs:
+Add these arguments after AtariDQN.py if to be used:
+  --env-id "Environment_Name" - This is for specifying specific environments, default game being Assault-v5
+  --save-model True - This is whether to save given model being run, default is set to False
+  --total-timesteps Number - This is how many steps the model should train, default set to 500, 000 steps
+  --capture-video True - This is whether to capture a video while training, default is set to False
+  --load "Saved_Model" - This is whether or not to load a model saved and run already, default is an empty String
 
 CleanRL citation:
 @article{huang2022cleanrl,
