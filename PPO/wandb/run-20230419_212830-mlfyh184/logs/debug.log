@@ -1,0 +1,27 @@
+2023-04-19 21:28:30,914 INFO    MainThread:21548 [wandb_setup.py:_flush():76] Configure stats pid to 21548
+2023-04-19 21:28:30,914 INFO    MainThread:21548 [wandb_setup.py:_flush():76] Loading settings from C:\Users\stick\.config\wandb\settings
+2023-04-19 21:28:30,914 INFO    MainThread:21548 [wandb_setup.py:_flush():76] Loading settings from C:\Users\stick\Documents\Virginia_Tech\4th_Year_Spring_Semester\ML-Capstone\Code\atarirl\PPO\wandb\settings
+2023-04-19 21:28:30,914 INFO    MainThread:21548 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2023-04-19 21:28:30,914 INFO    MainThread:21548 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2023-04-19 21:28:30,914 INFO    MainThread:21548 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'PPO\\AtariPPO.py', 'program': 'C:\\Users\\stick\\Documents\\Virginia_Tech\\4th_Year_Spring_Semester\\ML-Capstone\\Code\\atarirl\\PPO\\AtariPPO.py'}
+2023-04-19 21:28:30,914 INFO    MainThread:21548 [wandb_init.py:_log_setup():507] Logging user logs to C:\Users\stick\Documents\Virginia_Tech\4th_Year_Spring_Semester\ML-Capstone\Code\atarirl\PPO\wandb\run-20230419_212830-mlfyh184\logs\debug.log
+2023-04-19 21:28:30,914 INFO    MainThread:21548 [wandb_init.py:_log_setup():508] Logging internal logs to C:\Users\stick\Documents\Virginia_Tech\4th_Year_Spring_Semester\ML-Capstone\Code\atarirl\PPO\wandb\run-20230419_212830-mlfyh184\logs\debug-internal.log
+2023-04-19 21:28:30,914 INFO    MainThread:21548 [wandb_init.py:init():547] calling init triggers
+2023-04-19 21:28:30,915 INFO    MainThread:21548 [wandb_init.py:init():554] wandb.init called with sweep_config: {}
+config: {'exp_name': 'AtariPPO', 'seed': 1, 'torch_deterministic': True, 'cuda': True, 'track': True, 'wandb_project_name': 'cleanRL', 'wandb_entity': None, 'capture_video': True, 'env_id': 'ALE/Assault-v5', 'total_timesteps': 500000, 'learning_rate': 0.00025, 'num_envs': 8, 'num_steps': 128, 'anneal_lr': True, 'gamma': 0.99, 'gae_lambda': 0.95, 'num_minibatches': 4, 'update_epochs': 4, 'norm_adv': True, 'clip_coef': 0.1, 'clip_vloss': True, 'ent_coef': 0.01, 'vf_coef': 0.5, 'max_grad_norm': 0.5, 'target_kl': None, 'batch_size': 1024, 'minibatch_size': 256}
+2023-04-19 21:28:30,915 INFO    MainThread:21548 [wandb_init.py:init():595] starting backend
+2023-04-19 21:28:30,915 INFO    MainThread:21548 [wandb_init.py:init():599] setting up manager
+2023-04-19 21:28:30,917 INFO    MainThread:21548 [backend.py:_multiprocessing_setup():106] multiprocessing start_methods=spawn, using: spawn
+2023-04-19 21:28:30,921 INFO    MainThread:21548 [wandb_init.py:init():605] backend started and connected
+2023-04-19 21:28:30,922 INFO    MainThread:21548 [wandb_init.py:init():695] updated telemetry
+2023-04-19 21:28:30,969 INFO    MainThread:21548 [wandb_init.py:init():732] communicating run to backend with 60.0 second timeout
+2023-04-19 21:28:31,251 INFO    MainThread:21548 [wandb_run.py:_on_init():2176] communicating current version
+2023-04-19 21:28:31,294 INFO    MainThread:21548 [wandb_run.py:_on_init():2185] got version response 
+2023-04-19 21:28:31,295 INFO    MainThread:21548 [wandb_init.py:init():782] starting run threads in backend
+2023-04-19 21:28:31,972 INFO    MainThread:21548 [wandb_run.py:_console_start():2157] atexit reg
+2023-04-19 21:28:31,972 INFO    MainThread:21548 [wandb_run.py:_redirect():2012] redirect: SettingsConsole.WRAP_RAW
+2023-04-19 21:28:31,978 INFO    MainThread:21548 [wandb_run.py:_redirect():2077] Wrapping output streams.
+2023-04-19 21:28:31,978 INFO    MainThread:21548 [wandb_run.py:_redirect():2102] Redirects installed.
+2023-04-19 21:28:31,979 INFO    MainThread:21548 [wandb_init.py:init():824] run started, returning control to user process
+2023-04-19 21:28:31,980 INFO    MainThread:21548 [wandb_run.py:_tensorboard_callback():1432] tensorboard callback: runs/ALE/Assault-v5__AtariPPO__1__1681954106, True
+2023-04-19 22:22:04,807 WARNING MsgRouterThr:21548 [router.py:message_loop():77] message_loop has been closed

@@ -1,0 +1,55 @@
+{
+    "os": "Windows-10-10.0.19044-SP0",
+    "python": "3.10.11",
+    "heartbeatAt": "2023-04-20T01:28:31.387725",
+    "startedAt": "2023-04-20T01:28:30.910998",
+    "docker": null,
+    "cuda": null,
+    "args": [
+        "--track",
+        "True",
+        "--capture-video",
+        "True"
+    ],
+    "state": "running",
+    "program": "C:\\Users\\stick\\Documents\\Virginia_Tech\\4th_Year_Spring_Semester\\ML-Capstone\\Code\\atarirl\\PPO\\AtariPPO.py",
+    "codePath": "PPO\\AtariPPO.py",
+    "git": {
+        "remote": "https://git.cs.vt.edu/sungmin/atarirl.git",
+        "commit": "43f7540cd98e8193a244d370c8d4cf7578e35cbd"
+    },
+    "email": "sungmin@vt.edu",
+    "root": "C:/Users/stick/Documents/Virginia_Tech/4th_Year_Spring_Semester/ML-Capstone/Code/atarirl",
+    "host": "DESKTOP-4GJPGMF",
+    "username": "sungmin",
+    "executable": "C:\\Users\\stick\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\\python.exe",
+    "cpu_count": 8,
+    "cpu_count_logical": 16,
+    "cpu_freq": {
+        "current": 2208.0,
+        "min": 0.0,
+        "max": 2208.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 2208.0,
+            "min": 0.0,
+            "max": 2208.0
+        }
+    ],
+    "disk": {
+        "total": 934.3935508728027,
+        "used": 828.1117706298828
+    },
+    "gpu": "NVIDIA GeForce RTX 3070 Laptop GPU",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA GeForce RTX 3070 Laptop GPU",
+            "memory_total": 8589934592
+        }
+    ],
+    "memory": {
+        "total": 15.767879486083984
+    }
+}

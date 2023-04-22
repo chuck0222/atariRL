@@ -9,6 +9,13 @@ Add these arguments after AtariDQN.py if to be used:
   --total-timesteps Number - This is how many steps the model should train, default set to 500, 000 steps
   --capture-video True - This is whether to capture a video while training, default is set to False
   --load "Saved_Model" - This is whether or not to load a model saved and run already, default is an empty String
+  --track True - This is whether or not to track your model progress and logs into a seperate folder
+Add these arguments after AtariPPO.py if to be used:
+  --env-id "Environment_Name" - This is for specifying specific environments, default game being Assault-v5
+  --total-timesteps Number - This is how many steps the model should train, default set to 500, 000 steps
+  --capture-video True - This is whether to capture a video while training, default is set to False
+  --load "Saved_Model" - This is whether or not to load a model saved and run already, default is an empty String
+  --track True - This is whether or not to track your model progress and logs into a seperate folder
 
 CleanRL citation:
 @article{huang2022cleanrl,
