@@ -14,6 +14,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.distributions.categorical import Categorical
 from torch.utils.tensorboard import SummaryWriter
+from colabgymrender.recorder import Recorder
 
 from stable_baselines3.common.atari_wrappers import (  # isort:skip
     ClipRewardEnv,
@@ -90,6 +91,7 @@ def parse_args():
 def make_env(env_id, seed, idx, capture_video, run_name):
     def thunk():
         env = gym.make(env_id)
+        env = Recorder(env, "C:/Users/stick/Documents/Virginia_Tech/4th_Year_Spring_Semester/ML-Capstone/Code/atarirl/TrainingVideos")
         env = gym.wrappers.RecordEpisodeStatistics(env)
         if capture_video:
             if idx == 0:
@@ -212,6 +214,7 @@ if __name__ == "__main__":
             optimizer.param_groups[0]["lr"] = lrnow
 
         for step in range(0, args.num_steps):
+
             global_step += 1 * args.num_envs
             obs[step] = next_obs
             dones[step] = next_done

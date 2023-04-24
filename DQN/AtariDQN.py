@@ -22,6 +22,7 @@ from stable_baselines3.common.atari_wrappers import (
 )
 from stable_baselines3.common.buffers import ReplayBuffer
 from torch.utils.tensorboard import SummaryWriter
+from colabgymrender.recorder import Recorder
 
 # Function that parses given arguments
 def parse_args():
@@ -87,6 +88,7 @@ def parse_args():
 def make_env(env_id, seed, idx, capture_video, run_name):
     def thunk():
         env = gym.make(env_id)
+        env = Recorder(env, "C:/Users/stick/Documents/Virginia_Tech/4th_Year_Spring_Semester/ML-Capstone/Code/atarirl/TrainingVideos")
         env = gym.wrappers.RecordEpisodeStatistics(env)
         if capture_video: # Creates video folder if option is true
             if idx == 0:
@@ -110,7 +112,9 @@ def make_env(env_id, seed, idx, capture_video, run_name):
 # Function that creates environment given arguments
 def make_env_render(env_id, seed, idx, capture_video, run_name):
     def thunk():
-        env = gym.make(env_id, render_mode='human')
+        env = gym.make(env_id)
+        # env = gym.make(env_id, render_mode='human')
+        env = Recorder(env, "C:/Users/stick/Documents/Virginia_Tech/4th_Year_Spring_Semester/ML-Capstone/Code/atarirl/TrainingVideos")
         env = gym.wrappers.RecordEpisodeStatistics(env)
 
         env = ClipRewardEnv(env)
