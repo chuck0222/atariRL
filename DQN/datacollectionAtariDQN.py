@@ -181,6 +181,7 @@ if __name__ == "__main__":
 
     # TRY NOT TO MODIFY: start the game
     obs = envs.reset()
+    #Intializing data recording features
     obactions = [0] * envs.single_action_space.n
     data = {'episode length' : 0, 'episode score': 0, 'Action 1': 1, 'Action 2': 1, 'Action 3': 1, 'Action 4': 1, 'Action 5': 1, 'Action 6': 1, 'Action 7': 1}
     df = pd.DataFrame(data, index = [0])
@@ -196,11 +197,13 @@ if __name__ == "__main__":
 
         # TRY NOT TO MODIFY: execute the game and log data.
         next_obs, rewards, dones, infos = envs.step(actions)
+        #This tracts every single action done
         obactions[actions[0]] = obactions[actions[0]] + 1
 
         # TRY NOT TO MODIFY: record rewards for plotting purposes
         for info in infos:
             if "episode" in info.keys():
+                #THIS IS HOW WE RECORDED ALL THE EPISODE INFO INTO DATA FRAME
                 new_row = {'episode length' : info["episode"]["l"], 'episode score': info['episode']['r'], 'Action 1': obactions[0], 'Action 2': obactions[1], 'Action 3': obactions[2], 'Action 4': obactions[3], 'Action 5': obactions[4], 'Action 6': obactions[5], 'Action 7': obactions[6]} #'Action 7': obactions[6], 'Action 8': obactions[7], 'Action 9': obactions[8]
                 #print(new_row)
                 df.loc[len(df)] = new_row
@@ -276,6 +279,7 @@ if __name__ == "__main__":
             repo_name = f"{args.env_id}-{args.exp_name}-seed{args.seed}"
             repo_id = f"{args.hf_entity}/{repo_name}" if args.hf_entity else repo_name
             push_to_hub(args, episodic_returns, repo_id, "DQN", f"runs/{run_name}", f"videos/{run_name}-eval")
+    #CSV to use later in visual analysis
     df.to_csv('AssualtResultsRetry.csv')
     envs.close()
     writer.close()
